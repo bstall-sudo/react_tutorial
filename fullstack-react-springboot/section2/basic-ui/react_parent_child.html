@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>This is a header</h1> <! -- not affected by react as it is not in the root div-->
+
+    <div id="root">Hi this overwritten by the React elements</div>
+
+    <h5>This is a Footer</h5> <! -- not affected by react as it is not in the root div-->
+    <script src="./react-lib/react.development.js"></script>
+    <script src="./react-lib/react-dom.development.js"></script>
+    <script>
+        const child1 = React.createElement("div", 
+            {id : "child1"} , 
+            [
+                React.createElement("h1", {style:{color:"blue"}}, "child1 h1 with color blue"),
+                React.createElement("h2", {style:{color:"red"}}, "h2 with color blue"),
+
+
+            ]
+
+        );
+        const child2 = React.createElement("div",
+            {id: "child2"},
+            [
+                React.createElement("h3", {style:{color:"green"}}, "this is child 2, h3"),
+                React.createElement("h4", {style:{color:"purple"}}, "this is child 2 h4")
+            ]
+        )
+        const root = ReactDOM.createRoot(document.getElementById("root"));
+        root.render([child1, child2]);
+    </script>
+    
+</body>
+</html>

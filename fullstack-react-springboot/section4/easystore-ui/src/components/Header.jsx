@@ -1,0 +1,51 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faShoppingBasket, faTags } from "@fortawesome/free-solid-svg-icons";
+
+
+const Header = () => {
+    return ( 
+        <div className="header">
+            <div className="container">
+            <a className = "link" href="/">
+                <FontAwesomeIcon icon={faTags} className="fa-icon"/>
+                <span className="brand-title">Eazy Stickers</span>
+            </a>
+            <nav className="eazyNav">
+            <ul>
+                <li >
+                    <a href="/" className="navLink">
+                        Home
+                    </a>
+                </li>
+                <li >
+                    <a href="/about" className="navLink">
+                        About
+                    </a>
+                </li>
+                <li >
+                    <a href="/contact" className="navLink">
+                        Contact
+                    </a>
+                </li>
+                <li >
+                    <a href="/login" className="navLink">
+                        Login
+                    </a>
+                </li>
+                <li >
+                    <a href="/cart" className="navLink">
+                        <FontAwesomeIcon icon={faShoppingBasket} />
+                    </a>
+                </li>
+            
+            </ul>
+            </nav>
+            </div>
+        </div>
+
+
+
+    );
+};
+
+export default Header;
