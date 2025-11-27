@@ -16,7 +16,7 @@ we could also export the text together with the <p> Add a touch...</p> and then 
 export default function Home(){
     return (
 
-        <div className="home-container">  
+        <div className="max-w-[1152px] mx-auto px-6 py-8">  
            
 
             <PageHeading title = "Explore Eazy Stickers">  
