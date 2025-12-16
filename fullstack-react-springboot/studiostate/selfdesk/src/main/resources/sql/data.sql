@@ -87,3 +87,18 @@ VALUES ('NoHesitation', 'Always ready to take charge!', 6.00, 60, '/stickers/IWo
 
 INSERT INTO products (name, description, price, popularity, image_url, category, created_at, created_by, updated_at, updated_by)
 VALUES ('Wardgaze', 'Protective power of the evil eye', 6.00, 60, '/stickers/EvilEye.png', 'sticker', CURRENT_TIMESTAMP, 'admin', NULL, NULL);
+
+INSERT INTO products (name, description, price, popularity, image_url, category, created_at, created_by, updated_at, updated_by)
+VALUES ('Bisque Fire', 'Bisque Fire at 900 Degrees', 6.00, 60, '/firings/bisque01.png', 'firing', CURRENT_TIMESTAMP, 'admin', NULL, NULL);
+
+INSERT INTO products (name, description, price, popularity, image_url, category, created_at, created_by, updated_at, updated_by)
+VALUES ('Glaze Fire', 'Glaze Fire at 1200 Degrees', 6.00, 60, '/firings/glaze01.png', 'firing', CURRENT_TIMESTAMP, 'admin', NULL, NULL);
+
+INSERT INTO products (name, description, price, popularity, image_url, category, created_at, created_by, updated_at, updated_by)
+VALUES ('Monthly Pass 6h', '6h Studio Time for 11 Euros per hours', 66.00, 60, '/passes/monthlypass_06.png', 'passes', CURRENT_TIMESTAMP, 'admin', NULL, NULL);
+
+INSERT INTO products (name, description, price, popularity, image_url, category, created_at, created_by, updated_at, updated_by)
+VALUES ('Monthly Pass 10h', '10h Studio Time for 10 Euros per hours', 100.00, 60, '/passes/monthlypass_10.png', 'passes', CURRENT_TIMESTAMP, 'admin', NULL, NULL);
+
+INSERT INTO products (name, description, price, popularity, image_url, category, created_at, created_by, updated_at, updated_by)
+VALUES ('Walk In', 'Pay as you go for 15 Euros per hour', 15.00, 60, '/passes/walkin.png', 'walk-in', CURRENT_TIMESTAMP, 'admin', NULL, NULL);

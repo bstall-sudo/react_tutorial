@@ -7,6 +7,7 @@ import com.studiostate.selfdesk.service.IProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -17,11 +18,14 @@ import java.util.List;
 public class ProductController {
 
     private final ProductRepository productRepository;
-    private final IProductService iProductService;
+    private final IProductService productService;
 
     @GetMapping
-    public List<ProductDto> getProducts(){
-        List<ProductDto> productList = iProductService.getProducts();
-        return productList;
+    public List<ProductDto> getProducts(@RequestParam(required = false) String category) {
+        if (category == null || category.isBlank()) {
+            return productService.getProducts();
+        }
+        return productService.getProductsByCategory(category);
     }
 }
+

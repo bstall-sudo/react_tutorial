@@ -8,4 +8,8 @@ import java.util.List;
 public interface IProductService {
 
     List<ProductDto> getProducts();
+
+    List<ProductDto> getProductsByCategory(String category);
+
+
 }
