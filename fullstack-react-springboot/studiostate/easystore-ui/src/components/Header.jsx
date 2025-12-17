@@ -8,7 +8,7 @@ const Header = () => {
       <div className="flex items-center justify-between mx-auto max-w-[1152px] px-6 py-4">
             <a className = {navLinkClass} href="/">
                 <FontAwesomeIcon icon={faTags} className="h-8 w-8"/>
-                <span className="font-bold">Eazy Stickers</span>
+                <span className="font-bold">Ceramic Kingdom</span>
             </a>
             <nav className="flex items-center py-2 z-10">
             <ul className="flex space-x-6">
@@ -18,13 +18,13 @@ const Header = () => {
                     </a>
                 </li>
                 <li >
-                    <a href="/about" className={navLinkClass}>
-                        About
+                    <a href="/Firing" className={navLinkClass}>
+                        Firing
                     </a>
                 </li>
                 <li >
-                    <a href="/contact" className={navLinkClass}>
-                        Contact
+                    <a href="/Passes" className={navLinkClass}>
+                        Passes
                     </a>
                 </li>
                 <li >

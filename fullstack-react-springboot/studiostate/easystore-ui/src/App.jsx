@@ -3,6 +3,7 @@ import Home from './components/Home'
 import Header from './components/Header'
 import Footer from './components/footer/Footer'
 import React from 'react';  // needed for the React Fragment
+import Firing from "./components/Firing";
 
 
 /*the React.Fragment prevents the dummy div to be created (in the return statement, there can
@@ -15,7 +16,7 @@ function App() {
   return (
     <React.Fragment>
     <Header />
-    <Home />
+    <Firing />
     <Footer />
     
     </React.Fragment>

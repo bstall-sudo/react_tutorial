@@ -4,8 +4,8 @@ import apiClient from "../api/apiClient";
 import { useState, useEffect } from "react";
 
 // Hooks
-export default function Home() {
-  const [products, setProducts] = useState([]);
+export default function Firing() {
+  const [firings, setFirings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -18,8 +18,8 @@ export default function Home() {
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      const response = await apiClient.get("/products"); // Axios GET Request
-      setProducts(response.data); // Update products state with fetched data
+      const response = await apiClient.get("/products?category=passes"); // Axios GET Request
+      setFirings(response.data); // Update products state with fetched data
     } catch (error) {
       setError(
         error.response?.data?.message ||
@@ -48,10 +48,10 @@ export default function Home() {
 
   return (
     <div className="max-w-[1152px] mx-auto px-6 py-8">
-      <PageHeading title="Welcome to Ceramic Kingdom">
-        Feel at home and serve yourself!
+      <PageHeading title="Firings!">
+        Choose the type of firing that fits your needs!
       </PageHeading>
-      <ProductListings products={products} />
+      <ProductListings products={firings} />
     </div>
   );
 }

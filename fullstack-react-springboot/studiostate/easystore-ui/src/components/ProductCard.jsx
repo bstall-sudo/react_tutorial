@@ -18,7 +18,7 @@ export default function ProductCard({ product }) {
         <p className="text-base text-gray-600 mb-4">{product.description}</p>
         <div className="flex items-center justify-between mt-auto">
           <div className="bg-lighter text-primary font-medium text-sm py-2 px-4 rounded-tl-md">
-            <Price currency="$" price={product.price} />
+            <Price currency="€" price={product.price} />
           </div>
         </div>
       </div>

@@ -19,9 +19,9 @@ export default function Footer(){
             aria-hidden= "true"
             />
             by 
-            <a href="https://eazybytes.com/" target="_blank" rel= "noreferrer"
+            <a href="https://bertoldstallmach.com/" target="_blank" rel= "noreferrer"
             className="text-primary font-semibold px-1 transition-colors duration-300 hover:text-dark"> 
-                eazybytes
+                studio state systems
             </a>
 
         </footer>
