@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS products
     popularity  INT                                   NOT NULL,
     image_url   VARCHAR(500),
     category   VARCHAR(500),
+    merchandise  INT,
     created_at  TIMESTAMP   DEFAULT CURRENT_TIMESTAMP NOT NULL,
     created_by  VARCHAR(20)                           NOT NULL,
     updated_at  TIMESTAMP   DEFAULT NULL,

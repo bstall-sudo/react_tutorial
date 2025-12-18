@@ -1,39 +1,76 @@
-import React from 'react'
-import ProductCard from './ProductCard'
+import React, { useState, useMemo } from "react";
+import ProductCard from "./ProductCard";
+import Dropdown from "./Dropdown";
+import SearchBox from "./SearchBox";
 
+const sortList = [
+  "All",
+  "Firings",
+  "Passes",
+  "Tools",
+  "Glazes",
+  "Engobes",
+  "Clay",
+];
 
-/*
-if the statement "products.length > 0" is true,
-execute this "(
-          products.map((product) => (
-            <ProductCard key={product.productId} product={product} />
-          ))
-        )"
-else, execute this: 
-        (
-          <p className="product-listings-empty">No products found</p>
-        )
+export default function ({ products }) {
+  const [searchText, setSearchText] = useState("");
+  const [selectedSort, setSelectedSort] = useState("All");
 
-this "<ProductCard key={product.productId} product={product} />" passes props to the ProductCard.jsx and
-displays the ProductCard component
+  const filteredAndSortedProducts = useMemo(() => {
+    if (!Array.isArray(products)) {
+      return [];
+    }
 
-this "key={product.productId}" helps react to improve performance, because, in case of product updates, it knows,
-which products to update, and which not. 
+    let filteredProducts = products.filter(
+      (product) =>
+        product.name.toLowerCase().includes(searchText.toLowerCase()) ||
+        product.description.toLowerCase().includes(searchText.toLowerCase())
+    );
 
-*/
+    return selectedSort === "All"
+      ? filteredProducts
+      : filteredProducts
+          .slice()
+          .filter((product) =>
+            product.category.toLowerCase().includes(selectedSort.toLowerCase())
+          );
+  }, [products, searchText, selectedSort]);
 
-export default function ({products}) {
+  function handleSearchChange(inputSearch) {
+    setSearchText(inputSearch);
+  }
+
+  function handleSortChange(sortType) {
+    setSelectedSort(sortType);
+  }
   return (
     <div className="max-w-[1152px] mx-auto">
+      <div className="flex flex-col sm:flex-row justify-between items-center gap-4 pt-12">
+        <SearchBox
+          label="Search"
+          placeholder="Search products..."
+          value={searchText}
+          handleSearch={(value) => handleSearchChange(value)}
+        />
+        <Dropdown
+          label="Select Category"
+          options={sortList}
+          value={selectedSort}
+          handleSort={(value) => handleSortChange(value)}
+        />
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-8 gap-x-6 py-12">
-        {products.length > 0 ? (
-          products.map((product) => (
+        {filteredAndSortedProducts.length > 0 ? (
+          filteredAndSortedProducts.map((product) => (
             <ProductCard key={product.productId} product={product} />
           ))
         ) : (
-          <p className="text-center font-primary font-bold text-lg text-primary">No products found</p>
+          <p className="text-center font-primary font-bold text-lg text-primary">
+            No products found
+          </p>
         )}
       </div>
     </div>
-  )
+  );
 }
