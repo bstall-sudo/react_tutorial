@@ -1,11 +1,11 @@
 import React, { useState, useMemo } from "react";
 import ProductCard from "./ProductCard";
-import Dropdown from "./Dropdown";
 import SearchBox from "./SearchBox";
+import Dropdown from "./Dropdown";
 
 const sortList = ["Popularity", "Price Low to High", "Price High to Low"];
 
-export default function ({ products }) {
+export default function ProductListings({ products }) {
   const [searchText, setSearchText] = useState("");
   const [selectedSort, setSelectedSort] = useState("Popularity");
 

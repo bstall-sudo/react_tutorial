@@ -16,7 +16,6 @@ public class ProductDto {
     private String description;
     private BigDecimal price;
     private Integer popularity;
-    private String category;
     private String imageUrl;
     private Instant createdAt;
 }

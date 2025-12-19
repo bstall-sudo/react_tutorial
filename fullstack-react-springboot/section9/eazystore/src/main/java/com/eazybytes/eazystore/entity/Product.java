@@ -31,11 +31,6 @@ public class Product {
     @Column(name = "popularity", nullable = false)
     private Integer popularity;
 
-
-    @Column(name = "category", nullable = true)
-    private String category;
-
-
     @Column(name = "image_url", nullable = true)
     private String imageUrl;
 
