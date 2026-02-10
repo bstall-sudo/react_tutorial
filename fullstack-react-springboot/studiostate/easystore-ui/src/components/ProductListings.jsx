@@ -25,7 +25,7 @@ export default function ({ products }) {
     let filteredProducts = products.filter(
       (product) =>
         product.name.toLowerCase().includes(searchText.toLowerCase()) ||
-        product.description.toLowerCase().includes(searchText.toLowerCase())
+        product.description.toLowerCase().includes(searchText.toLowerCase()),
     );
 
     return selectedSort === "All"
@@ -33,7 +33,7 @@ export default function ({ products }) {
       : filteredProducts
           .slice()
           .filter((product) =>
-            product.category.toLowerCase().includes(selectedSort.toLowerCase())
+            product.category.toLowerCase().includes(selectedSort.toLowerCase()),
           );
   }, [products, searchText, selectedSort]);
 

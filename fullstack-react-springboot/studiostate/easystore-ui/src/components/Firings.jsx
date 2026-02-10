@@ -4,7 +4,7 @@ import apiClient from "../api/apiClient";
 import { useState, useEffect } from "react";
 
 // Hooks
-export default function Firing() {
+export default function Firings() {
   const [firings, setFirings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -18,7 +18,7 @@ export default function Firing() {
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      const response = await apiClient.get("/products?category=passes"); // Axios GET Request
+      const response = await apiClient.get("/products?category=firings"); // Axios GET Request
       setFirings(response.data); // Update products state with fetched data
     } catch (error) {
       setError(

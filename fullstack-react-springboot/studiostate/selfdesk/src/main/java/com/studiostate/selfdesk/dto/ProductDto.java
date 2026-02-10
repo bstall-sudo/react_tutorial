@@ -11,7 +11,7 @@ import java.time.Instant;
 @Setter
 public class ProductDto {
 
-    private Long productID;
+    private Long productId;
     private String name;
     private String description;
     private BigDecimal price;
@@ -19,4 +19,5 @@ public class ProductDto {
     private String category;
     private String imageUrl;
     private Instant createdAt;
+    private Integer merchandise;
 }
