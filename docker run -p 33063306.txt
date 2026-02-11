@@ -1,3 +1,8 @@
 docker run -p 3306:3306 --name eazystoredb -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=eazystore -v C:\Users\berto\Documents\Workspaces\react_tutorial\eazybytes-data:/var/lib/mysql -d mysql
 
 docker run -d --name eazystoredb -e MYSQL_ROOT_PASSWORD=strongpassword -p 3306:3306 mysql:9.5
+
+
+
+for installation on studio desktop
+docker run -p 3306:3306 --name eazystoredb -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=eazystore -v C:\Users\berto\Documents\react-apps\react-tutorial-studio-state\databases\eazystore-data:/var/lib/mysql -d mysql
