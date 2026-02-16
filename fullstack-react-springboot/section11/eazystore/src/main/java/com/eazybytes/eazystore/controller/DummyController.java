@@ -1,18 +1,33 @@
 package com.eazybytes.eazystore.controller;
 
 import com.eazybytes.eazystore.dto.UserDto;
+import org.apache.catalina.User;
+import org.springframework.http.RequestEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.http.HttpHeaders;
+import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/dummy")
 public class DummyController {
 
+    //http://localhost:8080/api/v1/dummy/create-user
     @PostMapping("/create-user")
     public String createUser(@RequestBody UserDto userDto){
         System.out.println(userDto);
         return "User created successfully";
+    }
+
+    //http://localhost:8080/api/v1/dummy/request-entity?name=madan&age=25
+    @PostMapping("/request-entity")
+    public String createUserWithEntity(RequestEntity<UserDto> requestEntity){
+        requestEntity.getHeaders();
+        UserDto userDto = requestEntity.getBody();
+        String queryString = requestEntity.getUrl().getQuery();
+        //String queryString = requestEntity.getUrl().getPath();
+        return "User created successfully: " + userDto +"- - - - " + queryString;
     }
 
     @GetMapping("/headers")
@@ -20,6 +35,13 @@ public class DummyController {
 
         return "Received headers with value: " + userAgent + " at: " + userLocation;
     }
+
+    @GetMapping("/headerToString")
+    public String readHeaderToString(@RequestHeader Map<String, String> headers){
+
+        return "Received headers with value: " + headers.toString();
+    }
+
 
     /*without @RequestParam(required = false) the request http://localhost:8080/api/v1/dummy/search (without search value
     will lead to an error. to accept requests without params you need to: @RequestParam(required = false)
@@ -30,6 +52,7 @@ public class DummyController {
         return "Searching for user: " + name;
     }
 
+    //http://localhost:8080/api/v1/dummy/multiple-search-map?firstName=Madan&lastName=Reddy
     @GetMapping("/multiple-search")
     public String multipleSearchUser(@RequestParam String firstName, @RequestParam String lastName){
         return "Searching for user: " + firstName + " " + lastName;

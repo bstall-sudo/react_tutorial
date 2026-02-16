@@ -4,6 +4,8 @@ import com.eazybytes.eazystore.dto.ContactRequestDto;
 import com.eazybytes.eazystore.repository.ContactRepository;
 import com.eazybytes.eazystore.service.IContactService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,9 +22,12 @@ public class ContactController {
     private final IContactService iContactService;
 
     @PostMapping
-    public String saveContacts(
+    public ResponseEntity<String> saveContacts(
         @RequestBody ContactRequestDto contactRequestDto) {
             iContactService.saveContact(contactRequestDto);
-            return "Request processed successfully";
+
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body("Request processed successfully");
+
     }
 }

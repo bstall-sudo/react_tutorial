@@ -27,6 +27,7 @@ public class ProductServiceImpl implements IProductService {
     private ProductDto transformToDTO (Product product){
         ProductDto productDto = new ProductDto();
         BeanUtils.copyProperties(product, productDto); // this copies all data to the data transfer model, only works, if the property names are the same
+
         return productDto;
 
     }

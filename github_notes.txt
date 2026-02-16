@@ -1,0 +1,9 @@
+add new repository:
+
+git remote add origin https://github.com/OWNER/REPOSITORY.git
+
+verify new remote:
+git remote -v
+
+changing an existing remote repository (takes two arguments):
+git remote set-url originhttps://github.com/OWNER/REPOSITORY.git
