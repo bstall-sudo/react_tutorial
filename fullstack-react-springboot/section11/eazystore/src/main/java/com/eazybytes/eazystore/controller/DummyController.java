@@ -1,8 +1,10 @@
 package com.eazybytes.eazystore.controller;
 
 import com.eazybytes.eazystore.dto.UserDto;
+import jakarta.validation.constraints.Size;
 import org.apache.catalina.User;
 import org.springframework.http.RequestEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.http.HttpHeaders;
@@ -11,6 +13,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/dummy")
+@Validated
 public class DummyController {
 
     //http://localhost:8080/api/v1/dummy/create-user
@@ -48,7 +51,7 @@ public class DummyController {
     defaultValue = "Guest"
  */
     @GetMapping("/search")
-    public String searchUser(@RequestParam(required = false, defaultValue = "Guest") String name){
+    public String searchUser(@Size(min=5, max=30) @RequestParam(required = false, defaultValue = "Guest") String name){
         return "Searching for user: " + name;
     }
 

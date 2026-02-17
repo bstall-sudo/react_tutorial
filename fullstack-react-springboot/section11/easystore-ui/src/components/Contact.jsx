@@ -8,26 +8,20 @@ import { toast } from "react-toastify";
 import { redirect } from "react-router-dom";
 
 export default function Contact() {
-  // this section is responsible for clearing the form after successfull submission
-  // relating to       <Form ref={formRef}
   const actionData = useActionData();
   const formRef = useRef(null);
+  const navigation = useNavigation();
+  const submit = useSubmit();
+  const isSubmitting = navigation.state === "submitting";
   useEffect(() => {
     if (actionData?.success) {
       formRef.current?.reset();
-      toast.success("Your message has been submitted successfully");
+      toast.success("Your message has been submitted successfully!");
     }
   }, [actionData]);
 
-  //this section disables the submit button, when submitting to prevent multiple submissions
-  // relating to <Button disabled = {isSubmitting}>
-
-  const navigation = useNavigation();
-  const isSubmitting = navigation.state === "submitting";
-
-  const submit = useSubmit(); // hook for manual submission
   const handleSubmit = (event) => {
-    event.preventDefault(); // default javascript behaviour: immediatly submit the form and refresh the page
+    event.preventDefault();
     const userConfirmed = window.confirm(
       "Are you sure you want to submit the form?",
     );
@@ -44,7 +38,6 @@ export default function Contact() {
     "block text-lg font-semibold text-primary dark:text-light mb-2";
   const textFieldStyle =
     "w-full px-4 py-2 text-base border rounded-md transition border-primary dark:border-light focus:ring focus:ring-dark dark:focus:ring-lighter focus:outline-none text-gray-800 dark:text-lighter bg-white dark:bg-gray-600 placeholder-gray-400 dark:placeholder-gray-300";
-
   return (
     <div className="max-w-[1152px] min-h-[852px] mx-auto px-6 py-8 font-primary bg-normalbg dark:bg-darkbg">
       {/* Page Title */}
@@ -59,7 +52,7 @@ export default function Contact() {
       <Form
         method="POST"
         ref={formRef}
-        onSubmit={handleSubmit} //for manual submitting
+        onSubmit={handleSubmit}
         className="space-y-6 max-w-[768px] mx-auto"
       >
         {/* Name Field */}
@@ -77,6 +70,11 @@ export default function Contact() {
             minLength={5}
             maxLength={30}
           />
+          {actionData?.errors?.name && (
+            <p className="text-red-500 text-sm mt-1">
+              {actionData.errors.name}
+            </p>
+          )}
         </div>
 
         {/* Email and mobile Row */}
@@ -94,6 +92,11 @@ export default function Contact() {
               className={textFieldStyle}
               required
             />
+            {actionData?.errors?.email && (
+              <p className="text-red-500 text-sm mt-1">
+                {actionData.errors.email}
+              </p>
+            )}
           </div>
 
           {/* Mobile Field */}
@@ -106,11 +109,16 @@ export default function Contact() {
               name="mobileNumber"
               type="tel"
               required
-              pattern="^\d{8,15}$"
+              pattern="^(\+|00|0)\d{5,15}"
               title="Mobile number must be exactly 10 digits"
               placeholder="Your Mobile Number"
               className={textFieldStyle}
             />
+            {actionData?.errors?.mobileNumber && (
+              <p className="text-red-500 text-sm mt-1">
+                {actionData.errors.mobileNumber}
+              </p>
+            )}
           </div>
         </div>
 
@@ -129,6 +137,11 @@ export default function Contact() {
             minLength={5}
             maxLength={500}
           ></textarea>
+          {actionData?.errors?.message && (
+            <p className="text-red-500 text-sm mt-1">
+              {actionData.errors.message}
+            </p>
+          )}
         </div>
 
         {/* Submit Button */}
@@ -138,7 +151,7 @@ export default function Contact() {
             disabled={isSubmitting}
             className="px-6 py-2 text-white dark:text-black text-xl rounded-md transition duration-200 bg-primary dark:bg-light hover:bg-dark dark:hover:bg-lighter"
           >
-            {isSubmitting ? "Submitting" : "Submit"}
+            {isSubmitting ? "Submitting..." : "Submit"}
           </button>
         </div>
       </Form>
@@ -158,8 +171,11 @@ export async function contactAction({ request, params }) {
   try {
     await apiClient.post("/contacts", contactData);
     return { success: true };
-    //return redirect("/home"); // to redirect after submission
+    // return redirect("/home");
   } catch (error) {
+    if (error.response?.status === 400) {
+      return { success: false, errors: error.response?.data };
+    }
     throw new Response(
       error.response?.data?.errorMessage ||
         error.message ||

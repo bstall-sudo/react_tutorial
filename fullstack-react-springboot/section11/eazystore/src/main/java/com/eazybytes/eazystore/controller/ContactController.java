@@ -3,6 +3,7 @@ package com.eazybytes.eazystore.controller;
 import com.eazybytes.eazystore.dto.ContactRequestDto;
 import com.eazybytes.eazystore.repository.ContactRepository;
 import com.eazybytes.eazystore.service.IContactService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ public class ContactController {
 
     @PostMapping
     public ResponseEntity<String> saveContacts(
-        @RequestBody ContactRequestDto contactRequestDto) {
+        @Valid @RequestBody ContactRequestDto contactRequestDto) {
             iContactService.saveContact(contactRequestDto);
 
             return ResponseEntity.status(HttpStatus.CREATED)

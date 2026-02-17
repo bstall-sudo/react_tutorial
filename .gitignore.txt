@@ -1,1 +1,5 @@
 *-data/
+
+eazybytes-data/
+
+studiostate-data/

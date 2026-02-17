@@ -22,7 +22,7 @@ export default function Home() {
       setProducts(response.data); // Update products state with fetched data
     } catch (error) {
       setError(
-        error.response?.data?.message ||
+        error.response?.data?.errorMessage ||
           "Failed to fetch products. Please try again.",
       );
     } finally {

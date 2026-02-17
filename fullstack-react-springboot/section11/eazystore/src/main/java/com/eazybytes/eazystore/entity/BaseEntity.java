@@ -17,8 +17,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.Instant;
 
 @Getter @Setter
-@MappedSuperclass
-@EntityListeners(AuditingEntityListener.class)
+@MappedSuperclass  //stellt sicher, dass BaseEntity keine eigene Tabelle hat
+@EntityListeners(AuditingEntityListener.class) //damit alle Entities autiting enablen, die BaseEntity extenden.
 public class BaseEntity {
 
     @Column(name = "created_at", nullable = false, updatable = false)
