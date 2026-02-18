@@ -19,7 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ContactController {
 
-    private final ContactRepository contactRepository;
+
     private final IContactService iContactService;
 
     @PostMapping
