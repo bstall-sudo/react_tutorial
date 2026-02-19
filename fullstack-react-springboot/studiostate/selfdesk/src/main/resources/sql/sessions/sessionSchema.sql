@@ -11,6 +11,10 @@ CREATE TABLE IF NOT EXISTS sessions
     client_end_time    TIMESTAMP                        DEFAULT NULL,
     session_comment VARCHAR(200)                        DEFAULT NULL,
     paid        TINYINT                                    DEFAULT 0,
-    open        TINYINT                                     DEFAULT 1
-
+    open        TINYINT                                     DEFAULT 1,
+    created_by      VARCHAR(20) DEFAULT NULL,
+    created_at   	TIMESTAMP   DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    category        VARCHAR(20),
+    updated_by      VARCHAR(20) DEFAULT NULL,
+    updated_at      TIMESTAMP   DEFAULT NULL
     );

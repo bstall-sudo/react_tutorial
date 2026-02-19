@@ -41,6 +41,8 @@ public class SessionServiceImpl implements ISessionService {
         session.setUserId(sessionRequestDto.getUserId());
         session.setServerStartTime(Instant.now(clock));
         session.setClientStartTime(sessionRequestDto.getClientStartTime());
+        session.setCreatedBy(sessionRequestDto.getUserName());
+        session.setCreatedAt(Instant.now(clock));
         /*  start time to add to session record??? */
         return session;
     }

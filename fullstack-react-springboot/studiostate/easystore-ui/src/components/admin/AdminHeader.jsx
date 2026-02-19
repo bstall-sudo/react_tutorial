@@ -8,13 +8,13 @@ import {
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 
-export default function Header() {
+export default function AdminHeader() {
   const navLinkClass =
     "text-center text-lg font-primary font-semibold text-primary py-2 dark:text-light hover:text-dark dark:hover:text-lighter";
   return (
     <header className="border-b border-gray-300 dark:border-gray-600 sticky top-0 z-20 bg-white dark:bg-darkbg">
       <div className="flex items-center justify-between mx-auto max-w-[1152px] px-6 py-4">
-        <Link to="/admin" className={navLinkClass}>
+        <Link to="/" className={navLinkClass}>
           <FontAwesomeIcon icon={faTags} className="h-8 w-8" />
           <span className="font-bold">Ceramic Kingdom</span>
         </Link>
@@ -52,12 +52,12 @@ export default function Header() {
             </li>
             <li>
               <NavLink
-                to="/login"
+                to="/admin/users"
                 className={({ isActive }) =>
                   isActive ? `underline ${navLinkClass}` : navLinkClass
                 }
               >
-                Login
+                Register User
               </NavLink>
             </li>
             <li>

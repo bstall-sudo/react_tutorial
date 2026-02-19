@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @Setter
 @Entity
 @Table (name="products")
-public class Product {
+public class Product extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,107 +42,7 @@ public class Product {
     @Column(name = "image_url", nullable = true)
     private String imageUrl;
 
-    @Column(name = "created_at", nullable = false)
-    private Instant createdAt;
-
-    @Column(name = "created_by", nullable = false)
-    private String createdBy;
-
-    @Column(name = "updated_at", nullable = true)
-    private Instant updatedAt;
-
-    @Column(name = "updated_by", nullable = true)
-    private String updatedBy;
-
-    /* getters and setters are not necessary with lombok
-    public Long getProductID() {
-        return productID;
-    }
 
 
-    public void setProductID(Long productID) {
-        this.productID = productID;
-    }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
-    public Integer getPopularity() {
-        return popularity;
-    }
-
-    public void setPopularity(Integer popularity) {
-        this.popularity = popularity;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Instant createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public Instant getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Instant updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public String getUpdatedBy() {
-        return updatedBy;
-    }
-
-    public void setUpdatedBy(String updatedBy) {
-        this.updatedBy = updatedBy;
-    }
-
-    */
 }
