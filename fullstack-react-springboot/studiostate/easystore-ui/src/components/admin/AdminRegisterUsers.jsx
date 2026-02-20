@@ -16,19 +16,19 @@ export default function AdminRegisterUsers() {
   useEffect(() => {
     if (actionData?.success) {
       formRef.current?.reset();
-      toast.success("Your message has been submitted successfully!");
+      toast.success(`New user ${actionData.firstName}, ${actionData.lastName} with ID '${actionData.userId}' has been saved successfully!`);
     }
   }, [actionData]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const userConfirmed = window.confirm(
-      "Are you sure you want to submit the form?"
+      "Are you sure you want to save?"
     );
 
     if (userConfirmed) {
       const formData = new FormData(formRef.current); // Get form data
-      submit(formData, { method: "post" }); // Proceed with form submission
+      submit(formData, { method: "post", action: "/admin/users"  }); // Proceed with form submission
     } else {
       toast.info("Form submission cancelled.");
     }
@@ -57,27 +57,59 @@ export default function AdminRegisterUsers() {
         onSubmit={handleSubmit}
         className="space-y-6 max-w-[768px] mx-auto"
       >
-        {/* Name Field */}
+
+                {/* First and Last Name Row */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  {/* First Name Field */}
+
         <div>
-          <label htmlFor="name" className={labelStyle}>
-            Name
+          <label htmlFor="firstName" className={labelStyle}>
+            First Name
           </label>
           <input
-            id="name"
-            name="name"
+            id="firstName"
+            name="firstName"
             type="text"
-            placeholder="Enter First Name, Last Name"
+            placeholder="Enter First Name (required)"
             className={textFieldStyle}
             required
-            minLength={5}
-            maxLength={30}
+            minLength={1}
+            maxLength={20}
           />
-          {actionData?.errors?.name && (
+          {actionData?.errors?.firstName && (
             <p className="text-red-500 text-sm mt-1">
-              {actionData.errors.name}
+              {actionData.errors.firstName}
             </p>
           )}
         </div>
+
+                          {/* Last Name Field */}
+
+        <div>
+          <label htmlFor="lastName" className={labelStyle}>
+            Last Name
+          </label>
+          <input
+            id="lastName"
+            name="lastName"
+            type="text"
+            placeholder="Enter Last Name (required)"
+            className={textFieldStyle}
+            required
+            minLength={1}
+            maxLength={20}
+          />
+          {actionData?.errors?.lastName && (
+            <p className="text-red-500 text-sm mt-1">
+              {actionData.errors.lastName}
+            </p>
+          )}
+        </div>
+
+        </div>
+
+
+   
 
         {/* Email and mobile Row */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -90,7 +122,8 @@ export default function AdminRegisterUsers() {
               id="email"
               name="email"
               type="email"
-              placeholder="Enter Email"
+              maxLength={30}
+              placeholder="Enter Email (required) "
               className={textFieldStyle}
               required
             />
@@ -110,10 +143,10 @@ export default function AdminRegisterUsers() {
               id="mobileNumber"
               name="mobileNumber"
               type="tel"
-        
+              maxLength={20}
               pattern="^(\+|00|0)\d{5,15}"
-              title="Mobile number must be exactly 10 digits"
-              placeholder="Enter Mobile Number"
+              title="Mobile number must start with '+' or '0' or '00' and can not be longer then 20 digits"
+              placeholder="(optional)"
               className={textFieldStyle}
             />
             {actionData?.errors?.mobileNumber && (
@@ -137,9 +170,9 @@ export default function AdminRegisterUsers() {
               id="street"
               name="street"
               type="text"
-              placeholder="Enter Street"
+              placeholder="(optional)"
               className={textFieldStyle}
-              minLength={3}
+              title="Street must have less then 30 characters."
               maxLength={30}
             
             />
@@ -150,29 +183,7 @@ export default function AdminRegisterUsers() {
             )}
           </div>
 
-          {/* Mobile Field */}
-          <div>
-            <label htmlFor="houseNumber" className={labelStyle}>
-              House Number
-            </label>
-            <input
-              id="houseNumber"
-              name="houseNumber"
-              type="number"
-              
-              pattern="^\d{1,5}$"
-              title="House Number must be exactly 1-5 digits"
-              placeholder="House Number"
-              className={textFieldStyle}
-            />
-            {actionData?.errors?.houseNumber && (
-              <p className="text-red-500 text-sm mt-1">
-                {actionData.errors.houseNumber}
-              </p>
-            )}
-          </div>
-
-                    {/* Mobile Field */}
+                              {/* Postal Code Field */}
           <div>
             <label htmlFor="postalCode" className={labelStyle}>
               Postal Code
@@ -183,7 +194,7 @@ export default function AdminRegisterUsers() {
               type="number"
               pattern="^\d{3,7}$"
               title="Postal Code must be 3-7 digits"
-              placeholder="Postal Code"
+              placeholder="(optional)"
               className={textFieldStyle}
             />
             {actionData?.errors?.postalCode && (
@@ -193,7 +204,31 @@ export default function AdminRegisterUsers() {
             )}
           </div>
 
-                    {/* Mobile Field */}
+          {/* Country Field */}
+          <div>
+            <label htmlFor="country" className={labelStyle}>
+              Country
+            </label>
+            <input
+              id="country"
+              name="country"
+              type="text"
+              title="Country must have less then 20 characters and at least 3 people living there."
+              placeholder="(optional)"
+              maxLength={20}
+            
+              className={textFieldStyle}
+            />
+            {actionData?.errors?.houseNumber && (
+              <p className="text-red-500 text-sm mt-1">
+                {actionData.errors.houseNumber}
+              </p>
+            )}
+          </div>
+
+
+
+                    {/* City Field */}
           <div>
             <label htmlFor="City" className={labelStyle}>
               City
@@ -202,10 +237,10 @@ export default function AdminRegisterUsers() {
               id="city"
               name="city"
               type="text"
-              title="City must have 3-30 characters"
-              placeholder="City"
-              minLength={3}
-              maxLength={30}
+              title="City must less than 20 characters"
+              placeholder="(optional)"
+             
+              maxLength={20}
               className={textFieldStyle}
             />
             {actionData?.errors?.city && (
@@ -230,7 +265,7 @@ export default function AdminRegisterUsers() {
             name="comments"
             type="text"
             rows="4"
-            placeholder="Experience, special agreements, etc. "
+            placeholder="(optional) Experience, special interests, agreements, etc. "
             className={textFieldStyle}
             
             minLength={5}
@@ -262,14 +297,27 @@ export async function contactAction({ request, params }) {
   const data = await request.formData();
 
   const contactData = {
-    name: data.get("name"),
+    firstName: data.get("firstName"),
+    lastName: data.get("lastName"),
     email: data.get("email"),
     mobileNumber: data.get("mobileNumber"),
     comments: data.get("comments"),
+    street: data.get("street"),
+    postalCode: data.get("postalCode"),
+    country: data.get("country"),
+    city: data.get("city"),
   };
   try {
-    await apiClient.post("/admin/create/user", contactData);
-    return { success: true };
+    const response = await apiClient.post("/admin/create/user", contactData);
+    console.log("create user response:", response);
+console.log("response.data:", response.data);
+    return { 
+      userId : response.data.userId,
+      firstName : response.data.firstName,
+      lastName : response.data.lastName,
+      success: true
+      
+    };
     // return redirect("/home");
   } catch (error) {
     if (error.response?.status === 400) {

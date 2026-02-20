@@ -1,7 +1,7 @@
 package com.studiostate.selfdesk.service;
 
 
-import com.studiostate.selfdesk.dto.ProductDto;
+
 import com.studiostate.selfdesk.dto.SessionEndRequestDto;
 import com.studiostate.selfdesk.dto.SessionGetResponseDto;
 import com.studiostate.selfdesk.dto.SessionRequestDto;
