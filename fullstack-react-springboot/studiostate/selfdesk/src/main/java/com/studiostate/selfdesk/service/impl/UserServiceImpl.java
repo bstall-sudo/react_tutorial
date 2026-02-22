@@ -1,8 +1,7 @@
 package com.studiostate.selfdesk.service.impl;
 
-import com.studiostate.selfdesk.dto.SessionEndRequestDto;
-import com.studiostate.selfdesk.dto.SessionGetResponseDto;
-import com.studiostate.selfdesk.dto.NewUserRequestDto;
+import com.studiostate.selfdesk.dto.*;
+import com.studiostate.selfdesk.entity.Product;
 import com.studiostate.selfdesk.entity.User;
 import com.studiostate.selfdesk.repository.UserRepository;
 import com.studiostate.selfdesk.service.IUserService;
@@ -31,12 +30,28 @@ public class UserServiceImpl implements IUserService {
 
     }
 
+    @Override
+    public List<UserResponseDto> getUserByFirstNameOrLastName(String firstName, String lastName){
+        return userRepository.findByFirstNameContainingOrLastNameContaining(firstName, lastName)
+                .stream()
+                .map(this::transformToDTO)
+                .collect(Collectors.toList());
+
+    }
+
     private User transformToEntity(NewUserRequestDto userRequestDto) {
         User user = new User();
         BeanUtils.copyProperties(userRequestDto, user);
         user.setCreatedBy(userRequestDto.getFirstName() + ", " + userRequestDto.getLastName());
         user.setCreatedAt(Instant.now(clock));
         return user;
+    }
+
+    private UserResponseDto transformToDTO (User user){
+        UserResponseDto userResponseDto = new UserResponseDto();
+        BeanUtils.copyProperties(user, userResponseDto); // this copies all data to the data transfer model, only works, if the property names are the same
+        return userResponseDto;
+
     }
 
 

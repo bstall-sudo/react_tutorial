@@ -2,8 +2,10 @@ package com.studiostate.selfdesk.controller;
 
 import com.studiostate.selfdesk.dto.NewUserRequestDto;
 import com.studiostate.selfdesk.dto.NewUserResponseDto;
+import com.studiostate.selfdesk.dto.UserResponseDto;
 import com.studiostate.selfdesk.entity.User;
 import com.studiostate.selfdesk.repository.ProductRepository;
+import com.studiostate.selfdesk.repository.UserRepository;
 import com.studiostate.selfdesk.service.IUserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final ProductRepository productRepository;
+    private final UserRepository userRepository;
     private final IUserService userService;
 
     @PostMapping("/admin/create/user")
@@ -35,6 +37,13 @@ public class UserController {
                         saved.getFirstName(),
                         saved.getLastName()
                 ));
+    }
+
+
+
+    @GetMapping("admin/user/{userPartialName}" )
+    public List<UserResponseDto> getUserByPartialName(@PathVariable String userPartialName){
+        return userService.getUserByFirstNameOrLastName(userPartialName, userPartialName);
     }
 }
 
