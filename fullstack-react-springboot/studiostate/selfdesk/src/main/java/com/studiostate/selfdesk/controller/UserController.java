@@ -23,7 +23,7 @@ public class UserController {
     private final UserRepository userRepository;
     private final IUserService userService;
 
-    @PostMapping("/admin/create/user")
+    @PostMapping("/admin/users/register")
     public ResponseEntity<NewUserResponseDto> saveUser(@RequestBody  @Valid NewUserRequestDto newUserRequestDto) {
 
         //userService.saveUser(newUserRequestDto);

@@ -22,8 +22,10 @@ import ErrorPage from "./components/ErrorPage.jsx";
 import CheckInOut from "./components/CheckInOut.jsx";
 import ProductDetail from "./components/ProductDetail.jsx";
 import AdminLayout from "./components/admin/AdminLayout.jsx";
-import { contactAction } from "./components/admin/AdminRegisterUsers.jsx";
-import AdminUsers from "./components/admin/AdminRegisterUsers.jsx";
+import { registerUserAction } from "./components/admin/AdminRegisterUser.jsx";
+import { createPassAction } from "./components/admin/AdminCreatePass.jsx";
+import AdminRegisterUser from "./components/admin/AdminRegisterUser.jsx";
+import AdminCreatePass from "./components/admin/AdminCreatePass.jsx";
 
 const routeDefinitions = createRoutesFromElements(
   <>
@@ -41,7 +43,9 @@ const routeDefinitions = createRoutesFromElements(
 
     <Route path="/admin" element={<AdminLayout />} errorElement={<ErrorPage />}>
 
-      <Route path="users" element={<AdminUsers />} action={contactAction} />
+      <Route path="users/register" element={<AdminRegisterUser />} action={registerUserAction} />
+
+      <Route path="passes/create" element={<AdminCreatePass />} action={createPassAction} />
      
     </Route>
   </>

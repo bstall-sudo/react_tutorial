@@ -72,7 +72,7 @@ export default function Header() {
             </li>
             <li>
               <Link to="/cart" className="text-primary py-2">
-                <FontAwesomeIcon icon={faShoppingBasket} />
+                <FontAwesomeIcon icon={faShoppingBasket} className="dark:text-light"/>
               </Link>
             </li>
           </ul>

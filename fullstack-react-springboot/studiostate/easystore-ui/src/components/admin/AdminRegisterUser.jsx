@@ -7,7 +7,7 @@ import { useEffect, useRef } from "react";
 import { toast } from "react-toastify";
 import { redirect } from "react-router-dom";
 
-export default function AdminRegisterUsers() {
+export default function AdminRegisterUser() {
   const actionData = useActionData();
   const formRef = useRef(null);
   const navigation = useNavigation();
@@ -23,16 +23,18 @@ export default function AdminRegisterUsers() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const userConfirmed = window.confirm(
-      "Are you sure you want to save?"
+      "Are you sure you want to save this new User?"
     );
 
     if (userConfirmed) {
       const formData = new FormData(formRef.current); // Get form data
-      submit(formData, { method: "post", action: "/admin/users"  }); // Proceed with form submission
+      submit(formData, { method: "post", action: "/admin/users/register"  }); // Proceed with form submission
     } else {
-      toast.info("Form submission cancelled.");
+      toast.info("User registration cancelled.");
     }
   };
+
+
 
   const labelStyle =
     "block text-lg font-semibold text-primary dark:text-light mb-2";
@@ -293,7 +295,7 @@ export default function AdminRegisterUsers() {
   );
 }
 
-export async function contactAction({ request, params }) {
+export async function registerUserAction({ request, params }) {
   const data = await request.formData();
 
   const contactData = {
@@ -308,7 +310,7 @@ export async function contactAction({ request, params }) {
     city: data.get("city"),
   };
   try {
-    const response = await apiClient.post("/admin/create/user", contactData);
+    const response = await apiClient.post("/admin/users/register", contactData);
     console.log("create user response:", response);
 console.log("response.data:", response.data);
     return { 

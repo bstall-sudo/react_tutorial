@@ -5,10 +5,30 @@ import {
   faSun,
   faMoon,
 } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
 import { Link, NavLink } from "react-router-dom";
 
 export default function AdminHeader() {
+    const [theme, setTheme] = useState(() => {
+    return localStorage.getItem("theme") === "dark" ? "dark" : "light";
+  });
+
+  useEffect(() => {
+    if (theme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme((prevTheme) => {
+      const newTheme = prevTheme === "light" ? "dark" : "light";
+      localStorage.setItem("theme", newTheme);
+      return newTheme;
+    });
+  };
   const navLinkClass =
     "text-center text-lg font-primary font-semibold text-primary py-2 dark:text-light hover:text-dark dark:hover:text-lighter";
   return (
@@ -19,6 +39,16 @@ export default function AdminHeader() {
           <span className="font-bold">Ceramic Kingdom</span>
         </Link>
         <nav className="flex items-center py-2 z-10">
+                    <button
+            className="flex items-center justify-center mx-3 w-8 h-8 rounded-full border border-primary dark:border-light transition duration-300 hover:bg-gray-300 dark:hover:bg-gray-600"
+            aria-label="Toggle theme"
+            onClick={toggleTheme}
+          >
+            <FontAwesomeIcon
+              icon={theme === "dark" ? faMoon : faSun}
+              className="w-4 h-4 dark:text-light text-primary"
+            />
+          </button>
           <ul className="flex space-x-6">
             <li>
               <NavLink
@@ -42,17 +72,17 @@ export default function AdminHeader() {
             </li>
             <li>
               <NavLink
-                to="/passes"
+                to="/admin/passes/create"
                 className={({ isActive }) =>
                   isActive ? `underline ${navLinkClass}` : navLinkClass
                 }
               >
-                Passes
+                Create Pass
               </NavLink>
             </li>
             <li>
               <NavLink
-                to="/admin/users"
+                to="/admin/users/register"
                 className={({ isActive }) =>
                   isActive ? `underline ${navLinkClass}` : navLinkClass
                 }
@@ -72,7 +102,8 @@ export default function AdminHeader() {
             </li>
             <li>
               <Link to="/cart" className="text-primary py-2">
-                <FontAwesomeIcon icon={faShoppingBasket} />
+                <FontAwesomeIcon icon={faShoppingBasket} className="dark:text-light"/>
+                
               </Link>
             </li>
           </ul>
