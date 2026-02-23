@@ -17,11 +17,10 @@ public class User extends BaseEntity {
     @Column(name = "user_id", nullable = false)
     private Long userId;
 
-    @Column(name = "first_name", nullable = false)
-    private String firstName;
+    @Column(name = "user_name", nullable = false)
+    private String userName;
 
-    @Column(name = "last_name", nullable = false)
-    private String lastName;
+
 
     @Column(name = "email", nullable = false)
     private String email;

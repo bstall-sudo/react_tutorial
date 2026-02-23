@@ -12,9 +12,9 @@ import lombok.Setter;
 public class UserResponseDto {
 
     private Long userId;
-    private String firstName;
+    private String userName;
 
-    private String lastName;
+    private String comments;
 
     //private Instant createdAt;
 

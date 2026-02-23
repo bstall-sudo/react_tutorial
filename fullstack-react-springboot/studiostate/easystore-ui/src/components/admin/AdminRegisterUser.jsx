@@ -16,34 +16,34 @@ export default function AdminRegisterUser() {
   useEffect(() => {
     if (actionData?.success) {
       formRef.current?.reset();
-      toast.success(`New user ${actionData.firstName}, ${actionData.lastName} with ID '${actionData.userId}' has been saved successfully!`);
+      toast.success(
+        `New user ${actionData.userName} with ID '${actionData.userId}' has been saved successfully!`,
+      );
     }
   }, [actionData]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const userConfirmed = window.confirm(
-      "Are you sure you want to save this new User?"
+      "Are you sure you want to save this new User?",
     );
 
     if (userConfirmed) {
       const formData = new FormData(formRef.current); // Get form data
-      submit(formData, { method: "post", action: "/admin/users/register"  }); // Proceed with form submission
+      submit(formData, { method: "post", action: "/admin/users/register" }); // Proceed with form submission
     } else {
       toast.info("User registration cancelled.");
     }
   };
 
-
-
   const labelStyle =
     "block text-lg font-semibold text-primary dark:text-light mb-2";
   const textFieldStyle =
     "w-full px-4 py-2 text-base border rounded-md transition border-primary dark:border-light focus:ring focus:ring-dark dark:focus:ring-lighter focus:outline-none text-gray-800 dark:text-lighter bg-white dark:bg-gray-600 placeholder-gray-400 dark:placeholder-gray-300";
- const textFieldStyle_small =
+  const textFieldStyle_small =
     "w-full px-4 py-2 text-base border rounded-md transition border-primary dark:border-light focus:ring focus:ring-dark dark:focus:ring-lighter focus:outline-none text-gray-800 dark:text-lighter bg-white dark:bg-gray-600 placeholder-gray-400 dark:placeholder-gray-300";
- 
-    return (
+
+  return (
     <div className="max-w-[1152px] min-h-[852px] mx-auto px-6 py-8 font-primary bg-normalbg dark:bg-darkbg">
       {/* Page Title */}
       <PageTitle title="Register New User" />
@@ -59,59 +59,54 @@ export default function AdminRegisterUser() {
         onSubmit={handleSubmit}
         className="space-y-6 max-w-[768px] mx-auto"
       >
-
-                {/* First and Last Name Row */}
+        {/* First and Last Name Row */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  {/* First Name Field */}
+          {/* First Name Field */}
 
-        <div>
-          <label htmlFor="firstName" className={labelStyle}>
-            First Name
-          </label>
-          <input
-            id="firstName"
-            name="firstName"
-            type="text"
-            placeholder="Enter First Name (required)"
-            className={textFieldStyle}
-            required
-            minLength={1}
-            maxLength={20}
-          />
-          {actionData?.errors?.firstName && (
-            <p className="text-red-500 text-sm mt-1">
-              {actionData.errors.firstName}
-            </p>
-          )}
+          <div>
+            <label htmlFor="firstName" className={labelStyle}>
+              First Name
+            </label>
+            <input
+              id="firstName"
+              name="firstName"
+              type="text"
+              placeholder="Enter First Name (required)"
+              className={textFieldStyle}
+              required
+              minLength={1}
+              maxLength={20}
+            />
+            {actionData?.errors?.firstName && (
+              <p className="text-red-500 text-sm mt-1">
+                {actionData.errors.firstName}
+              </p>
+            )}
+          </div>
+
+          {/* Last Name Field */}
+
+          <div>
+            <label htmlFor="lastName" className={labelStyle}>
+              Last Name
+            </label>
+            <input
+              id="lastName"
+              name="lastName"
+              type="text"
+              placeholder="Enter Last Name (required)"
+              className={textFieldStyle}
+              required
+              minLength={1}
+              maxLength={20}
+            />
+            {actionData?.errors?.lastName && (
+              <p className="text-red-500 text-sm mt-1">
+                {actionData.errors.lastName}
+              </p>
+            )}
+          </div>
         </div>
-
-                          {/* Last Name Field */}
-
-        <div>
-          <label htmlFor="lastName" className={labelStyle}>
-            Last Name
-          </label>
-          <input
-            id="lastName"
-            name="lastName"
-            type="text"
-            placeholder="Enter Last Name (required)"
-            className={textFieldStyle}
-            required
-            minLength={1}
-            maxLength={20}
-          />
-          {actionData?.errors?.lastName && (
-            <p className="text-red-500 text-sm mt-1">
-              {actionData.errors.lastName}
-            </p>
-          )}
-        </div>
-
-        </div>
-
-
-   
 
         {/* Email and mobile Row */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -159,9 +154,7 @@ export default function AdminRegisterUser() {
           </div>
         </div>
 
-
-
-{/* Street Number */}
+        {/* Street Number */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
           {/* Street Field */}
           <div>
@@ -176,7 +169,6 @@ export default function AdminRegisterUser() {
               className={textFieldStyle}
               title="Street must have less then 30 characters."
               maxLength={30}
-            
             />
             {actionData?.errors?.street && (
               <p className="text-red-500 text-sm mt-1">
@@ -185,7 +177,7 @@ export default function AdminRegisterUser() {
             )}
           </div>
 
-                              {/* Postal Code Field */}
+          {/* Postal Code Field */}
           <div>
             <label htmlFor="postalCode" className={labelStyle}>
               Postal Code
@@ -218,7 +210,6 @@ export default function AdminRegisterUser() {
               title="Country must have less then 20 characters and at least 3 people living there."
               placeholder="(optional)"
               maxLength={20}
-            
               className={textFieldStyle}
             />
             {actionData?.errors?.houseNumber && (
@@ -228,9 +219,7 @@ export default function AdminRegisterUser() {
             )}
           </div>
 
-
-
-                    {/* City Field */}
+          {/* City Field */}
           <div>
             <label htmlFor="City" className={labelStyle}>
               City
@@ -241,7 +230,6 @@ export default function AdminRegisterUser() {
               type="text"
               title="City must less than 20 characters"
               placeholder="(optional)"
-             
               maxLength={20}
               className={textFieldStyle}
             />
@@ -252,10 +240,6 @@ export default function AdminRegisterUser() {
             )}
           </div>
         </div>
-
-
-
-
 
         {/* Comments Field */}
         <div>
@@ -269,7 +253,6 @@ export default function AdminRegisterUser() {
             rows="4"
             placeholder="(optional) Experience, special interests, agreements, etc. "
             className={textFieldStyle}
-            
             minLength={5}
             maxLength={500}
           ></textarea>
@@ -312,13 +295,11 @@ export async function registerUserAction({ request, params }) {
   try {
     const response = await apiClient.post("/admin/users/register", contactData);
     console.log("create user response:", response);
-console.log("response.data:", response.data);
-    return { 
-      userId : response.data.userId,
-      firstName : response.data.firstName,
-      lastName : response.data.lastName,
-      success: true
-      
+    console.log("response.data:", response.data);
+    return {
+      userId: response.data.userId,
+      userName: response.data.userName,
+      success: true,
     };
     // return redirect("/home");
   } catch (error) {
@@ -329,7 +310,7 @@ console.log("response.data:", response.data);
       error.response?.data?.errorMessage ||
         error.message ||
         "Failed to submit your message. Please try again.",
-      { status: error.status || 500 }
+      { status: error.status || 500 },
     );
   }
 }

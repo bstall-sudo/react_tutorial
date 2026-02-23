@@ -31,8 +31,8 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public List<UserResponseDto> getUserByFirstNameOrLastName(String firstName, String lastName){
-        return userRepository.findByFirstNameContainingOrLastNameContaining(firstName, lastName)
+    public List<UserResponseDto> getUserByUserName( String userName){
+        return userRepository.findByUserNameContaining(userName)
                 .stream()
                 .map(this::transformToDTO)
                 .collect(Collectors.toList());
@@ -42,7 +42,8 @@ public class UserServiceImpl implements IUserService {
     private User transformToEntity(NewUserRequestDto userRequestDto) {
         User user = new User();
         BeanUtils.copyProperties(userRequestDto, user);
-        user.setCreatedBy(userRequestDto.getFirstName() + ", " + userRequestDto.getLastName());
+        user.setUserName(userRequestDto.getFirstName() + " " + userRequestDto.getLastName());
+        user.setCreatedBy(userRequestDto.getFirstName() + " " + userRequestDto.getLastName());
         user.setCreatedAt(Instant.now(clock));
         return user;
     }

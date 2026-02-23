@@ -14,9 +14,9 @@ import java.time.Instant;
 public class NewUserResponseDto {
 
     private Long userId;
-    private String firstName;
+    private String userName;
 
-    private String lastName;
+    private String comments;
     //private Instant createdAt;
 
     //private String createdBy;

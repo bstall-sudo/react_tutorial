@@ -18,9 +18,8 @@ export default function UserNameMock({ onSubmitUser }) {
       "user",
       JSON.stringify({ name: name, userId: userId }),
     );
-    console.log("useEffect was used-----------------");
+
     const user = JSON.parse(localStorage.getItem("user"));
-    console.log("user is:                    mmm ", user.userId);
   }, [userId]);
 
   return (

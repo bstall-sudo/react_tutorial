@@ -34,8 +34,8 @@ public class UserController {
                 .status(HttpStatus.CREATED)
                 .body(new NewUserResponseDto(
                         saved.getUserId(),
-                        saved.getFirstName(),
-                        saved.getLastName()
+                        saved.getUserName(),
+                        saved.getComments()
                 ));
     }
 
@@ -43,7 +43,7 @@ public class UserController {
 
     @GetMapping("admin/user/{userPartialName}" )
     public List<UserResponseDto> getUserByPartialName(@PathVariable String userPartialName){
-        return userService.getUserByFirstNameOrLastName(userPartialName, userPartialName);
+        return userService.getUserByUserName(userPartialName);
     }
 }
 
