@@ -7,8 +7,7 @@ import { useEffect, useState, useRef } from "react";
 import { toast } from "react-toastify";
 import { redirect } from "react-router-dom";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import SearchUserBar from "../SearchUserBar";
 
 export default function AdminCreatePass() {
   const actionData = useActionData();
@@ -39,26 +38,7 @@ export default function AdminCreatePass() {
     }
   };
 
-  //hier suchdaten einfügen
-  //Seachbar Useeffect
-  const [searchInput, setSearchInput] = useState("");
-
-  const [searchResponse, setSearchResponse] = useState([]);
-
-  const fetchUsers = async () => {
-    try {
-      const response = await apiClient.get(`admin/user/${searchInput}`);
-      setSearchResponse(response.data); // komplettes JSON übernehmen
-      console.log(searchResponse);
-    } catch (error) {
-      console.error("Fehler beim Laden:", error);
-    }
-  };
-
-  const handleChange = (value) => {
-    setSearchInput(value);
-    fetchUsers(value);
-  };
+  const [selectedUser, setSelectedUser] = useState([]);
 
   const labelStyle =
     "block text-lg font-semibold text-primary dark:text-light mb-2";
@@ -66,7 +46,7 @@ export default function AdminCreatePass() {
     "w-full px-4 py-2 text-base border rounded-md transition border-primary dark:border-light focus:ring focus:ring-dark dark:focus:ring-lighter focus:outline-none text-gray-800 dark:text-lighter bg-white dark:bg-gray-600 placeholder-gray-400 dark:placeholder-gray-300";
 
   const textFieldStyleReadOnly =
-    "cursor-not-allowed w-full  py-1 text-base rounded-md transition dark:border-light dark:focus:ring-lighter focus:outline-none text-gray-600 dark:text-lighter <bg-gray-1></bg-gray-1>00 dark:bg-darkbg placeholder-gray-400 dark:placeholder-gray-300";
+    "cursor-not-allowed w-full text-wrap py-1 text-base rounded-md transition dark:border-light dark:focus:ring-lighter focus:outline-none text-gray-600 dark:text-lighter <bg-gray-1></bg-gray-1>00 dark:bg-darkbg placeholder-gray-400 dark:placeholder-gray-300";
 
   const textFieldStyle_small =
     "w-full px-4 py-2 text-base border rounded-md transition border-primary dark:border-light focus:ring focus:ring-dark dark:focus:ring-lighter focus:outline-none text-gray-800 dark:text-lighter bg-white dark:bg-darkbg placeholder-gray-800 dark:placeholder-gray-300";
@@ -81,27 +61,16 @@ export default function AdminCreatePass() {
       </p>
 
       {/* Search Field */}
-      <div className=" max-w-[768px] mx-auto mt-8 text-gray-600 dark:text-lighter mb-8 text-center  ">
-        <label
-          htmlFor="expiryDateTime"
-          className="block text-lg font-semibold text-primary dark:text-light mb-2"
-        >
-          Search User
-        </label>
-        <div className="flex items-center gap-2 border rounded-md bg-white dark:bg-gray-600 transition border-primary dark:border-light focus-within:ring focus-within:ring-dark dark:focus-within:ring-lighter px-3">
-          <FontAwesomeIcon
-            icon={faSearch}
-            className="h-4 text-primary dark:text-light shrink-0"
-          />
 
-          <input
-            className="flex-1 py-2 bg-transparent focus:outline-none text-gray-800 dark:text-lighter placeholder-gray-400 dark:placeholder-gray-300 min-w-0"
-            placeholder="Search…"
-            value={searchInput}
-            onChange={(e) => handleChange(e.target.value)}
-          />
-        </div>
-      </div>
+      <SearchUserBar
+        onUserSelect={(user) => {
+          setSelectedUser(user);
+          console.log("selected:", user);
+        }}
+        onClear={() => {
+          setSelectedUser(null); //hier wird es zurückgesetzt
+        }}
+      />
 
       {/* Create Pass Form */}
       <Form
@@ -111,39 +80,23 @@ export default function AdminCreatePass() {
         className="space-y-6 max-w-[768px] mx-auto"
       >
         {/* First and Last Name Row */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 flex gap-6">
+        <div className="flex items-start gap-3">
           {/* First Name Field */}
-
-          <div>
-            <input
-              id="firstName"
-              name="firstName"
-              type="text"
-              readOnly
-              placeholder="NO INPUT, READ ONLY!"
-              className={textFieldStyleReadOnly}
-              required
-              value={searchInput ?? ""}
-            />
-            {actionData?.errors?.firstName && (
-              <p className="text-red-500 text-sm mt-1">
-                {actionData.errors.firstName}
-              </p>
-            )}
-          </div>
 
           {/* Last Name Field */}
 
-          <div>
+          <div className="shrink-0 w-auto">
             <input
-              id="lastName"
-              name="lastName"
+              id="userName"
+              name="userName"
               type="text"
               readOnly
-              placeholder="NO INPUT, READ ONLY!"
-              className={textFieldStyleReadOnly}
-              required
-              value={searchInput ?? ""}
+              className="
+      cursor-not-allowed w-auto px-2 py-1 text-base rounded-md transition
+      focus:outline-none text-gray-600 dark:text-lighter
+      bg-gray-100 dark:bg-darkbg placeholder-gray-400 dark:placeholder-gray-300
+    "
+              value={selectedUser ? `${selectedUser.userName}` : ""}
             />
             {actionData?.errors?.lastName && (
               <p className="text-red-500 text-sm mt-1">
@@ -152,22 +105,36 @@ export default function AdminCreatePass() {
             )}
           </div>
 
-          <div>
+          <div className="w-auto">
             <input
               id="userId"
               name="userId"
               type="text"
               readOnly
-              placeholder="NO INPUT, READ ONLY!"
-              className={textFieldStyleReadOnly}
+              className="cursor-not-allowed w-auto px-2 py-1 text-base rounded-md transition
+      focus:outline-none text-gray-600 dark:text-lighter
+      bg-gray-100 dark:bg-darkbg placeholder-gray-400 dark:placeholder-gray-300"
               required
-              value={searchInput ?? ""}
+              value={selectedUser ? `${selectedUser.userId}` : ""}
             />
-            {actionData?.errors?.userId && (
+            {actionData?.errors?.firstName && (
               <p className="text-red-500 text-sm mt-1">
-                {actionData.errors.userId}
+                {actionData.errors.firstName}
               </p>
             )}
+          </div>
+
+          <div className="min-w-0 flex-1">
+            <textarea
+              readOnly
+              rows={4}
+              className="cursor-not-allowed w-full px-2 py-1 text-base rounded-md transition
+      focus:outline-none text-gray-600 dark:text-lighter
+      bg-gray-100 dark:bg-darkbg placeholder-gray-400 dark:placeholder-gray-300
+      resize-none whitespace-pre-wrap break-words
+      h-28 max-h-28 overflow-y-auto"
+              value={selectedUser ? String(selectedUser.comments ?? "") : ""}
+            />
           </div>
         </div>
 
@@ -261,8 +228,8 @@ export async function createPassAction({ request, params }) {
   const data = await request.formData();
 
   const contactData = {
-    firstName: data.get("firstName"),
-    lastName: data.get("lastName"),
+    userName: data.get("userName"),
+    expiryDateTime: data.get("expireyDateTime"),
     userId: data.get("userId"),
     comments: data.get("comments"),
     passType: data.get("passType"),

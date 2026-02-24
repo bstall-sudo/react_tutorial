@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS users
     mobile_number   VARCHAR(20)                         DEFAULT NULL,
     street			VARCHAR(30) 						DEFAULT NULL,
     postal_code		VARCHAR(7) 							DEFAULT NULL,
+    city			VARCHAR(20) 							DEFAULT NULL,
     country			VARCHAR(20) 						DEFAULT NULL,
     password        VARCHAR(200),
     comments		VARCHAR(500) 						DEFAULT NULL,

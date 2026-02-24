@@ -34,6 +34,9 @@ public class User extends BaseEntity {
     @Column(name = "postal_code", nullable = true)
     private String postalCode;
 
+    @Column(name = "city", nullable = true)
+    private String city;
+
     @Column(name = "country", nullable = true)
     private String country;
 

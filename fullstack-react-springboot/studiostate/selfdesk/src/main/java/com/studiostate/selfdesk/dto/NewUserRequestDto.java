@@ -12,10 +12,10 @@ import lombok.Setter;
 public class NewUserRequestDto {
 
     @NotBlank(message="First Name can not be empty.")
-    @Size(min= 2, max=15, message="First Name must have 2-15 characters.")
+    @Size(min= 1, max=20, message="First Name must have 1-20 characters.")
     private String firstName;
     @NotBlank(message="Last Name can not be empty.")
-    @Size(min= 2, max=15, message="Last Name must have 2-15 characters.")
+    @Size(min= 1, max=20, message="Last Name must have 1-20 characters.")
     private String lastName;
     @Email(message="Invalid Email address.")
     @NotBlank(message="Email can not be empty.")
@@ -30,6 +30,8 @@ public class NewUserRequestDto {
     private String street;
 
     private String postalCode;
+
+    private String city;
 
     private String country;
 
