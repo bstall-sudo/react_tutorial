@@ -10,5 +10,5 @@ public interface IUserService {
 
     User saveUser(NewUserRequestDto newUserRequestDto);
 
-    List<UserResponseDto> getUserByUserName( String lastName);
+    List<UserResponseDto> getUserByUserName( String userName);
 }

@@ -24,8 +24,12 @@ export default function AdminRegisterUser() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    const formData = new FormData(formRef.current);
+    const firstName = formData.get("firstName");
+    const lastName = formData.get("lastName");
     const userConfirmed = window.confirm(
-      "Are you sure you want to save this new User?",
+      `Are you sure you want to register ${firstName}, ${lastName} as a new User?`,
     );
 
     if (userConfirmed) {

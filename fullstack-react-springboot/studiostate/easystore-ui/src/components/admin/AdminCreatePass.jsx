@@ -19,20 +19,24 @@ export default function AdminCreatePass() {
     if (actionData?.success) {
       formRef.current?.reset();
       toast.success(
-        `New Pass with ID '${actionData.passId}' for ${actionData.firstName}, ${actionData.lastName} has been saved successfully!`,
+        `New Pass with ID '${actionData.passId}' for ${actionData.userName}has been saved successfully!`,
       );
     }
   }, [actionData]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    const formData = new FormData(formRef.current);
+    const passType = formData.get("passType");
+    const userName = formData.get("userName"); // kommt aus readonly input
     const userConfirmed = window.confirm(
-      `Are you sure you want to create this pass for ${actionData.firstName}, ${actionData.lastName}?`,
+      `Are you sure you want to create this pass of type , '${passType}' for ${userName}?`,
     );
 
     if (userConfirmed) {
       const formData = new FormData(formRef.current); // Get form data
-      submit(formData, { method: "post", action: "/admin/passes/" }); // Proceed with form submission
+      submit(formData, { method: "post", action: "/admin/passes/create" }); // Proceed with form submission
     } else {
       toast.info("Pass Creation cancelled.");
     }
@@ -80,51 +84,12 @@ export default function AdminCreatePass() {
         className="space-y-6 max-w-[768px] mx-auto"
       >
         {/* First and Last Name Row */}
-        <div className="flex items-start gap-3">
+        <div>
           {/* First Name Field */}
 
           {/* Last Name Field */}
 
-          <div className="shrink-0 w-auto">
-            <input
-              id="userName"
-              name="userName"
-              type="text"
-              readOnly
-              className="
-      cursor-not-allowed w-auto px-2 py-1 text-base rounded-md transition
-      focus:outline-none text-gray-600 dark:text-lighter
-      bg-gray-100 dark:bg-darkbg placeholder-gray-400 dark:placeholder-gray-300
-    "
-              value={selectedUser ? `${selectedUser.userName}` : ""}
-            />
-            {actionData?.errors?.lastName && (
-              <p className="text-red-500 text-sm mt-1">
-                {actionData.errors.lastName}
-              </p>
-            )}
-          </div>
-
-          <div className="w-auto">
-            <input
-              id="userId"
-              name="userId"
-              type="text"
-              readOnly
-              className="cursor-not-allowed w-auto px-2 py-1 text-base rounded-md transition
-      focus:outline-none text-gray-600 dark:text-lighter
-      bg-gray-100 dark:bg-darkbg placeholder-gray-400 dark:placeholder-gray-300"
-              required
-              value={selectedUser ? `${selectedUser.userId}` : ""}
-            />
-            {actionData?.errors?.firstName && (
-              <p className="text-red-500 text-sm mt-1">
-                {actionData.errors.firstName}
-              </p>
-            )}
-          </div>
-
-          <div className="min-w-0 flex-1">
+          <div>
             <textarea
               readOnly
               rows={4}
@@ -132,53 +97,85 @@ export default function AdminCreatePass() {
       focus:outline-none text-gray-600 dark:text-lighter
       bg-gray-100 dark:bg-darkbg placeholder-gray-400 dark:placeholder-gray-300
       resize-none whitespace-pre-wrap break-words
-      h-28 max-h-28 overflow-y-auto"
+       overflow-y-auto"
               value={selectedUser ? String(selectedUser.comments ?? "") : ""}
             />
           </div>
         </div>
+        <div className="grid grid-cols-1 sm:grid-cols-5 gap-6  ">
+          <div className=" items-end col-span-4">
+            <div>
+              <div className="flex">
+                <input
+                  id="userName"
+                  name="userName"
+                  type="text"
+                  readOnly
+                  className="
+      cursor-not-allowed text-2xl font-extrabold rounded-md transition
+      focus:outline-none text-purple-700 dark:text-lighter
+      bg-gray-100 dark:bg-darkbg placeholder-gray-400 dark:placeholder-gray-300
+    "
+                  value={selectedUser ? `${selectedUser.userName}` : ""}
+                />
+                {actionData?.errors?.userName && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {actionData.errors.userName}
+                  </p>
+                )}
+              </div>
 
-        {/* Expiry Date Time and Pass Type Row */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          {/* Expiry Date Time Field */}
-
-          <div>
-            <label htmlFor="expiryDateTime" className={labelStyle}>
-              Expiry Date and Time
-            </label>
-            <input
-              id="expiryDateTime"
-              name="expiryDateTime"
-              type="text"
-              placeholder="DD:MM:YYYY hh:mm:ss (required)"
-              className={textFieldStyle}
-              required
-              minLength={1}
-              maxLength={20}
-            />
-            {actionData?.errors?.expiryDateTime && (
-              <p className="text-red-500 text-sm mt-1">
-                {actionData.errors.expiryDateTime}
-              </p>
-            )}
+              <div className="flex">
+                <label
+                  htmlFor="passType"
+                  className="  flex-end font-extrabold text-1xl rounded-md transition
+      focus:outline-none text-gray-600 dark:text-lighter
+      bg-gray-100 dark:bg-darkbg"
+                >
+                  {selectedUser ? "ID: " : ""}
+                </label>
+                <input
+                  id="userId"
+                  name="userId"
+                  type="text"
+                  readOnly
+                  className="cursor-not-allowed px-2  flex-end font-extrabold text-1xl rounded-md transition
+      focus:outline-none text-gray-600 dark:text-lighter
+      bg-gray-100 dark:bg-darkbg placeholder-gray-400 dark:placeholder-gray-300"
+                  required
+                  value={selectedUser ? `${selectedUser.userId}` : ""}
+                />
+                {actionData?.errors?.userId && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {actionData.errors.userId}
+                  </p>
+                )}
+              </div>
+            </div>
           </div>
 
           {/* Pass Type */}
-
-          <div>
-            <label htmlFor="pass Type" className={labelStyle}>
+          <div className="col-span-1">
+            <label htmlFor="passType" className={labelStyle}>
               Pass Type
             </label>
-            <input
+
+            <select
               id="passType"
               name="passType"
-              type="text"
-              placeholder="hh:mm:ss (required)"
               className={textFieldStyle}
               required
-              minLength={1}
-              maxLength={20}
-            />
+              defaultValue=""
+            >
+              <option value="" disabled>
+                Please Select
+              </option>
+              <option value="6_hours">6 hours</option>
+              <option value="10_hours">10 hours</option>
+              <option value="15_hours">15 hours</option>
+              <option value="infinite">Infinite</option>
+            </select>
+
             {actionData?.errors?.passType && (
               <p className="text-red-500 text-sm mt-1">
                 {actionData.errors.passType}
@@ -202,11 +199,58 @@ export default function AdminCreatePass() {
             minLength={5}
             maxLength={500}
           ></textarea>
-          {actionData?.errors?.message && (
+          {actionData?.errors?.comments && (
             <p className="text-red-500 text-sm mt-1">
-              {actionData.errors.message}
+              {actionData.errors.comments}
             </p>
           )}
+        </div>
+
+        {/* Expiry Date Time and remainingSeconds Row for test only delete later */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          {/* Expiry Date Time Field */}
+
+          <div>
+            <label htmlFor="expiryDateTime" className={labelStyle}>
+              T after Seconds from Now
+            </label>
+            <input
+              id="expiryDateTime"
+              name="expiryDateTime"
+              type="number"
+              placeholder="expires in how many seconds? (required)"
+              className={textFieldStyle}
+              required
+              minLength={1}
+              maxLength={20}
+            />
+            {actionData?.errors?.expiryDateTime && (
+              <p className="text-red-500 text-sm mt-1">
+                {actionData.errors.expiryDateTime}
+              </p>
+            )}
+          </div>
+
+          {/* valid for delete later test only*/}
+
+          <div>
+            <label htmlFor="remainingSeconds" className={labelStyle}>
+              Test: remainingSeconds
+            </label>
+
+            <input
+              id="remainingSeconds"
+              name="remainingSeconds"
+              type="number"
+              placeholder="how many seconds on Pass?"
+              className={textFieldStyle}
+            />
+            {actionData?.errors?.remainingSeconds && (
+              <p className="text-red-500 text-sm mt-1">
+                {actionData.errors.remainingSeconds}
+              </p>
+            )}
+          </div>
         </div>
 
         {/* Submit Button */}
@@ -227,21 +271,25 @@ export default function AdminCreatePass() {
 export async function createPassAction({ request, params }) {
   const data = await request.formData();
 
-  const contactData = {
+  const passData = {
     userName: data.get("userName"),
-    expiryDateTime: data.get("expireyDateTime"),
     userId: data.get("userId"),
     comments: data.get("comments"),
     passType: data.get("passType"),
+    //delete expiryDateTime and remainingSeconds after test phase
+    expiryDateTime: data.get("expiryDateTime"),
+    remainingSeconds: data.get("remainingSeconds")
+      ? data.get("remainingSeconds")
+      : 0,
   };
   try {
-    const response = await apiClient.post("/admin/passes/create", contactData);
+    const response = await apiClient.post("/admin/passes/create", passData);
     console.log("create pass response:", response);
     console.log("response.data:", response.data);
     return {
       userId: response.data.userId,
-      firstName: response.data.firstName,
-      lastName: response.data.lastName,
+      passId: response.data.passId,
+      userName: response.data.userName,
       passType: response.data.passType,
       comments: response.data.comments,
       success: true,
