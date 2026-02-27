@@ -9,6 +9,8 @@ import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRef } from "react";
 import FileUploader from "./FileUploader";
+import { useCart } from "../store/cart-context";
+import FiringPhotoInput from "./FiringPhotoInput";
 
 export default function ProductDetail() {
   const location = useLocation();
@@ -20,6 +22,17 @@ export default function ProductDetail() {
   const zoomRef = useRef(null);
   const [isHovering, setIsHovering] = useState(false);
   const [backgroundPosition, setBackgroundPosition] = useState("center");
+
+  const { addMerchToCart, addFiringToCart } = useCart();
+  const [selectedPhoto, setSelectedPhoto] = useState(null);
+
+  const handleAddToCart = () => {
+    if (product.category !== "firings") {
+      addMerchToCart(product, quantity);
+    } else {
+      addFiringToCart(product, weight, selectedPhoto /* später */);
+    }
+  };
 
   const handleMouseMove = (e) => {
     const { left, top, width, height } =
@@ -120,15 +133,25 @@ export default function ProductDetail() {
                     className="px-2 py-1 border rounded-md focus:ring focus:ring-light dark:focus:ring-gray-600 dark:bg-gray-800 text-gray-900 dark:text-gray-100"
                   />
                 </div>
-                <FileUploader />
+                <FiringPhotoInput onPhotoSelected={setSelectedPhoto} />
+                {selectedPhoto && (
+                  <img
+                    src={selectedPhoto}
+                    alt="Scale photo"
+                    className="w-32 rounded"
+                  />
+                )}
               </div>
             ) : (
-              "huhuhuuhlkajs"
+              <div></div>
             )}
             {/* Quantity Input */}
 
             {/* Add to Cart Button */}
-            <button className="w-full px-4 py-2 bg-primary dark:bg-light text-white dark:text-black rounded-md text-lg font-semibold hover:bg-dark dark:hover:bg-lighter transition">
+            <button
+              onClick={handleAddToCart}
+              className="w-full px-4 py-2 bg-primary dark:bg-light text-white dark:text-black rounded-md text-lg font-semibold hover:bg-dark dark:hover:bg-lighter transition"
+            >
               Add to Cart
               <FontAwesomeIcon icon={faShoppingCart} className="ml-2" />
             </button>

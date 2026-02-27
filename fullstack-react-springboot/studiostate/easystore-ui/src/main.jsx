@@ -11,6 +11,7 @@ import {
 import { ToastContainer, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+import { CartProvider } from "./store/cart-context.jsx";
 
 import About from "./components/About.jsx";
 import Login from "./components/Login.jsx";
@@ -42,29 +43,38 @@ const routeDefinitions = createRoutesFromElements(
     </Route>
 
     <Route path="/admin" element={<AdminLayout />} errorElement={<ErrorPage />}>
+      <Route
+        path="users/register"
+        element={<AdminRegisterUser />}
+        action={registerUserAction}
+      />
 
-      <Route path="users/register" element={<AdminRegisterUser />} action={registerUserAction} />
-
-      <Route path="passes/create" element={<AdminCreatePass />} action={createPassAction} />
-     
+      <Route
+        path="passes/create"
+        element={<AdminCreatePass />}
+        action={createPassAction}
+      />
     </Route>
-  </>
+  </>,
 );
 
 const appRouter = createBrowserRouter(routeDefinitions);
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <RouterProvider router={appRouter} />
-        <ToastContainer
-      position="top-center"
-      autoClose={3000}
-      hideProgressBar={false}
-      newestOnTop={false}
-      draggable
-      pauseOnHover
-      theme={localStorage.getItem("theme") === "dark" ? "dark" : "light"}
-      transition={Bounce}
-    />
+    <CartProvider>
+      <RouterProvider router={appRouter} />
+    </CartProvider>
+       {" "}
+    <ToastContainer
+      position="top-center"
+      autoClose={3000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      draggable
+      pauseOnHover
+      theme={localStorage.getItem("theme") === "dark" ? "dark" : "light"}
+      transition={Bounce}
+    />
   </StrictMode>,
 );

@@ -8,7 +8,10 @@ import {
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 
+import { useCart } from "../store/cart-context";
+
 export default function Header() {
+  const { totalQuantity } = useCart();
   const navLinkClass =
     "text-center text-lg font-primary font-semibold text-primary py-2 dark:text-light hover:text-dark dark:hover:text-lighter";
   return (
@@ -71,8 +74,14 @@ export default function Header() {
               </NavLink>
             </li>
             <li>
-              <Link to="/cart" className="text-primary py-2">
-                <FontAwesomeIcon icon={faShoppingBasket} className="dark:text-light"/>
+              <Link to="/cart" className=" relative text-primary py-2">
+                <FontAwesomeIcon
+                  icon={faShoppingBasket}
+                  className="text-primary dark:text-light w-6"
+                />
+                <div className="absolute -top-2 -right-6 text-xs bg-yellow-400 text-black font-semibold rounded-full px-2 py-1 leading-none">
+                  {totalQuantity}
+                </div>
               </Link>
             </li>
           </ul>
