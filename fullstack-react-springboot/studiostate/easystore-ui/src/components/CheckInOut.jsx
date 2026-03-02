@@ -10,6 +10,7 @@ import {
 } from "../utils/time";
 import UserNameMock from "./UserNameMock";
 import SessionHistoryUser from "./SessionHistoryUser";
+import { useCart } from "../store/cart-context";
 
 export default function CheckInOut() {
   const [timeDateVariable, setTimeDateVariable] = useState(
@@ -24,6 +25,8 @@ export default function CheckInOut() {
 
   const startRef = useRef(null);
   const [user, setUser] = useState({ name: "", userId: "" });
+
+  const { addStudioTimeToCart } = useCart();
 
   function handleClick() {
     setToggleState((prev) => (prev === 0 ? 1 : 0));
@@ -89,9 +92,15 @@ export default function CheckInOut() {
   const isCheckedIn = toggleState === 1;
 
   async function endSession(sessionId, clientEndTime) {
-    await apiClient.put(`/sessions/${sessionId}`, {
+    const res = await apiClient.put(`/sessions/${sessionId}`, {
       clientEndTime: clientEndTime.toISOString(),
     });
+
+    addStudioTimeToCart(
+      res.data.userName,
+      res.data.serverStartTime,
+      res.data.serverEndTime,
+    );
   }
 
   async function startSession(clientStart) {

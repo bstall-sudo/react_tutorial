@@ -30,6 +30,7 @@ public class SessionController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(new SessionResponseDto(
+                        saved.getUserName(),
                         saved.getSessionId(),
                         saved.getOpen(),
                         saved.getServerStartTime(),
@@ -51,6 +52,7 @@ public class SessionController {
 
         return ResponseEntity.ok(
                 new SessionResponseDto(
+                        updated.getUserName(),
                         updated.getSessionId(),
                         updated.getOpen(),
                         updated.getServerStartTime(),

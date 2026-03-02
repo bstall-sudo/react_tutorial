@@ -1,14 +1,28 @@
 import React from "react";
 import { useCart } from "../store/cart-context";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faTimes, faClock } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
+import { calculateDuration, calcSecondsFromString } from "../utils/time";
 
 export default function CartTable() {
   const { cart, removeItem, updateMerchQty, updateFiringWeight } = useCart();
 
   const calcLineTotal = (item) => {
     if (item.type === "MERCH") return item.price * item.quantity;
+
+    if (item.type === "STUDIOTIME")
+      return (
+        (calcSecondsFromString(
+          calculateDuration(
+            item.startDateTime,
+            item.endDateTime,
+            item.sessionId,
+          ),
+        ) *
+          15) /
+        3600
+      );
 
     // FIRING:
     // Annahme: item.price ist Preis pro Kilo
@@ -38,29 +52,42 @@ export default function CartTable() {
               className="text-sm sm:text-base text-primary dark:text-light text-center"
             >
               <td className="px-4 sm:px-6 py-4 flex items-center">
-                <Link
-                  to={`/products/${item.productId}`}
-                  state={{ product: item }}
-                  className="flex items-center"
-                >
-                  {item.type === "FIRING" && item.photo ? (
-                    <img
-                      src={item.photo}
-                      alt="Scale"
-                      className="w-16 h-16 rounded-md object-cover mr-4 hover:scale-110 transition-transform"
-                    />
-                  ) : (
-                    <img
-                      src={item.imageUrl}
-                      alt={item.name}
-                      className="w-16 h-16 rounded-md object-cover mr-4 hover:scale-110 transition-transform"
-                    />
-                  )}
+                {item.productId ? (
+                  <Link
+                    to={`/products/${item.productId}`}
+                    state={{ product: item }}
+                    className="flex items-center"
+                  >
+                    {item.type === "FIRING" && item.photo ? (
+                      <img
+                        src={item.photo}
+                        alt="Scale"
+                        className="w-16 h-16 rounded-md object-cover mr-4 hover:scale-110 transition-transform"
+                      />
+                    ) : (
+                      <img
+                        src={item.imageUrl}
+                        alt={item.name}
+                        className="w-16 h-16 rounded-md object-cover mr-4 hover:scale-110 transition-transform"
+                      />
+                    )}
 
-                  <span className="text-primary dark:text-light hover:underline">
-                    {item.name}
-                  </span>
-                </Link>
+                    <span className="text-primary dark:text-light hover:underline">
+                      {item.name}
+                    </span>
+                  </Link>
+                ) : (
+                  <div className="flex items-center">
+                    <FontAwesomeIcon
+                      icon={faClock}
+                      className="px-4 py-4 mr-4 text-primary dark:text-red-400 border border-primary dark:border-red-400 p-2 rounded hover:bg-lighter dark:hover:bg-gray-700"
+                    />
+
+                    <span className="px-2 text-primary dark:text-light hover:underline">
+                      StudioTime
+                    </span>
+                  </div>
+                )}
               </td>
 
               <td className="px-4 sm:px-6 py-4">
@@ -78,7 +105,7 @@ export default function CartTable() {
                     }
                     className="w-16 px-2 py-1 border rounded-md focus:ring focus:ring-light dark:focus:ring-gray-600 dark:bg-gray-800 text-gray-900 dark:text-gray-100"
                   />
-                ) : (
+                ) : item.type === "FIRING" ? (
                   <div className="flex flex-col items-center gap-1">
                     <input
                       type="number"
@@ -94,6 +121,21 @@ export default function CartTable() {
                       className="w-24 px-2 py-1 border rounded-md focus:ring focus:ring-light dark:focus:ring-gray-600 dark:bg-gray-800 text-gray-900 dark:text-gray-100"
                     />
                     <span className="text-xs opacity-80">grams</span>
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center gap-1">
+                    <p
+                      className="w-24 px-2 py-1 
+                      dark:bg-gray-800
+                      text-gray-900 dark:text-gray-100"
+                    >
+                      {calculateDuration(
+                        item.startDateTime,
+                        item.endDateTime,
+                        item.sessionId,
+                      )}
+                    </p>
+                    <span className="text-xs opacity-80">StudioTime</span>
                   </div>
                 )}
               </td>

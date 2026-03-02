@@ -13,6 +13,7 @@ import java.time.Instant;
 @AllArgsConstructor
 public class SessionResponseDto {
 
+    private String userName;
     private Long sessionId;
     private boolean open;
     private Instant serverStartTime;

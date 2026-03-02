@@ -7,6 +7,12 @@ export function formatTime(ms) {
   return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
 }
 
+export function calcSecondsFromString(hh_mm_ss_string) {
+  var hms_list = hh_mm_ss_string.split(":");
+  var seconds = +hms_list[0] * 60 * 60 + +hms_list[1] * 60 + +hms_list[2];
+  return seconds;
+}
+
 export function formatDate(d) {
   if (!(d instanceof Date) || Number.isNaN(d.getTime()))
     return "no date available";

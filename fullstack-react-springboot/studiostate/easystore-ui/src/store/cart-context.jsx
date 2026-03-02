@@ -5,6 +5,7 @@ export const useCart = () => useContext(CartContext);
 
 const ADD_MERCH = "ADD_MERCH";
 const ADD_FIRING = "ADD_FIRING";
+const ADD_STUDIOTIME = "ADD_STUDIOTIME";
 const REMOVE_ITEM = "REMOVE_ITEM";
 const UPDATE_MERCH_QTY = "UPDATE_MERCH_QTY";
 const UPDATE_FIRING_WEIGHT = "UPDATE_FIRING_WEIGHT";
@@ -56,6 +57,25 @@ const cartReducer = (prevCart, action) => {
           cartItemId: generateCartItemId(),
           weight, // grams
           photo: photo || null, // später
+        },
+      ];
+    }
+
+    case ADD_STUDIOTIME: {
+      const { userName, startDateTime, endDateTime, sessionId, passId } =
+        action.payload;
+
+      // IMMER neue Zeile
+      return [
+        ...prevCart,
+        {
+          ...userName,
+          type: "STUDIOTIME",
+          cartItemId: generateCartItemId(),
+          startDateTime,
+          endDateTime,
+          sessionId,
+          passId,
         },
       ];
     }
@@ -128,6 +148,13 @@ export const CartProvider = ({ children }) => {
     dispatch({ type: ADD_FIRING, payload: { product, weight, photo } });
   };
 
+  const addStudioTimeToCart = (userName, startDateTime, endDateTime) => {
+    dispatch({
+      type: ADD_STUDIOTIME,
+      payload: { userName, startDateTime, endDateTime },
+    });
+  };
+
   const removeItem = (cartItemId) => {
     dispatch({ type: REMOVE_ITEM, payload: { cartItemId } });
   };
@@ -149,6 +176,7 @@ export const CartProvider = ({ children }) => {
   const totalQuantity = cart.reduce((acc, item) => {
     if (item.type === "MERCH") return acc + (item.quantity || 0);
     if (item.type === "FIRING") return acc + 1;
+    if (item.type === "STUDIOTIME") return acc + 1;
     return acc;
   }, 0);
 
@@ -158,6 +186,7 @@ export const CartProvider = ({ children }) => {
         cart,
         addMerchToCart,
         addFiringToCart,
+        addStudioTimeToCart,
         removeItem,
         updateMerchQty,
         updateFiringWeight,
