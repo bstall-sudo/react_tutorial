@@ -27,6 +27,8 @@ import { registerUserAction } from "./components/admin/AdminRegisterUser.jsx";
 import { createPassAction } from "./components/admin/AdminCreatePass.jsx";
 import AdminRegisterUser from "./components/admin/AdminRegisterUser.jsx";
 import AdminCreatePass from "./components/admin/AdminCreatePass.jsx";
+import AdminCheckInOut from "./components/admin/AdminCheckInOut.jsx";
+import AdminCart from "./components/admin/AdminCart.jsx";
 
 const routeDefinitions = createRoutesFromElements(
   <>
@@ -54,6 +56,8 @@ const routeDefinitions = createRoutesFromElements(
         element={<AdminCreatePass />}
         action={createPassAction}
       />
+      <Route path="cart" element={<AdminCart />} />
+      <Route path="CheckInOut" element={<AdminCheckInOut />} />
     </Route>
   </>,
 );

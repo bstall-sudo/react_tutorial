@@ -1,0 +1,16 @@
+CREATE TABLE IF NOT EXISTS prices (
+    price_id BIGINT NOT NULL AUTO_INCREMENT,
+
+    product      	VARCHAR(40) NOT NULL,
+
+    price_in_cents INT NOT NULL,
+    product_type VARCHAR(40) NOT NULL,
+
+    created_by      	VARCHAR(40) DEFAULT NULL,
+
+    updated_by      	VARCHAR(40) DEFAULT NULL,
+
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+)

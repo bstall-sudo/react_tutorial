@@ -20,6 +20,20 @@ export function formatDate(d) {
   return `${dateList[4]} ${dateList[1]} ${dateList[2]} ${dateList[3]}`;
 }
 
+export function formatDateTime(dateTimeString) {
+  if (!dateTimeString) return "-";
+
+  const date = new Date(dateTimeString);
+
+  return date.toLocaleString("de-DE", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
 export function msBetween(a, b = new Date()) {
   return b - a;
 }
@@ -37,7 +51,7 @@ function safeParse(key, fallback) {
 }
 
 export function checkLocalStorageTimeVariable() {
-  let startTime = safeParse("clientStartTime", 0);
+  let startTime = safeParse("checkInAt", 0);
   if (startTime !== null && startTime !== 0) {
     return formatTime(new Date().getTime() - Date.parse(startTime));
   } else {
@@ -46,7 +60,7 @@ export function checkLocalStorageTimeVariable() {
 }
 
 export function checkLocalStorageTimeDateVariable() {
-  let startTime = safeParse("clientStartTime", 0);
+  let startTime = safeParse("checkInAt", 0);
   if (startTime !== null && startTime !== 0) {
     const dateTime = new Date(startTime);
     const date = dateTime.toDateString();

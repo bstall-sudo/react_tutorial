@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.util.List;
 
 @Getter
 @Setter
@@ -16,10 +17,9 @@ public class SessionResponseDto {
     private String userName;
     private Long sessionId;
     private boolean open;
-    private Instant serverStartTime;
-    private Instant clientStartTime;
-    private Instant clientEndTime;
-    private Instant serverEndTime;
+    private Instant checkInAt;
+    private Instant checkOutAt;
 
+    private List<SessionAllocationResponseDto> allocations;
 }
 

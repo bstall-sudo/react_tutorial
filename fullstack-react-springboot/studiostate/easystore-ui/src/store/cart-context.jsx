@@ -6,6 +6,7 @@ export const useCart = () => useContext(CartContext);
 const ADD_MERCH = "ADD_MERCH";
 const ADD_FIRING = "ADD_FIRING";
 const ADD_STUDIOTIME = "ADD_STUDIOTIME";
+const ADD_PASS = "ADD_PASS";
 const REMOVE_ITEM = "REMOVE_ITEM";
 const UPDATE_MERCH_QTY = "UPDATE_MERCH_QTY";
 const UPDATE_FIRING_WEIGHT = "UPDATE_FIRING_WEIGHT";
@@ -13,7 +14,6 @@ const UPDATE_FIRING_PHOTO = "UPDATE_FIRING_PHOTO";
 const CLEAR_CART = "CLEAR_CART";
 
 const generateCartItemId = () => {
-  // simple unique id (reicht für local)
   return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
 };
 
@@ -48,34 +48,65 @@ const cartReducer = (prevCart, action) => {
     case ADD_FIRING: {
       const { product, weight, photo } = action.payload;
 
-      // IMMER neue Zeile
       return [
         ...prevCart,
         {
           ...product,
           type: "FIRING",
           cartItemId: generateCartItemId(),
-          weight, // grams
-          photo: photo || null, // später
+          weight,
+          photo: photo || null,
         },
       ];
     }
 
     case ADD_STUDIOTIME: {
-      const { userName, startDateTime, endDateTime, sessionId, passId } =
+      const { userName, startDateTime, endDateTime, sessionId, allocations } =
         action.payload;
 
-      // IMMER neue Zeile
+      const existingStudioTimeItem = prevCart.find(
+        (item) => item.type === "STUDIOTIME" && item.sessionId === sessionId,
+      );
+
+      if (existingStudioTimeItem) {
+        return prevCart.map((item) =>
+          item.type === "STUDIOTIME" && item.sessionId === sessionId
+            ? {
+                ...item,
+                userName,
+                startDateTime,
+                endDateTime,
+                sessionId,
+                allocations: allocations ?? [],
+              }
+            : item,
+        );
+      }
+
       return [
         ...prevCart,
         {
-          ...userName,
+          userName,
           type: "STUDIOTIME",
           cartItemId: generateCartItemId(),
           startDateTime,
           endDateTime,
           sessionId,
-          passId,
+          allocations: allocations ?? [],
+        },
+      ];
+    }
+
+    case ADD_PASS: {
+      const { product } = action.payload;
+
+      return [
+        ...prevCart,
+        {
+          ...product,
+          type: "PASS",
+          cartItemId: generateCartItemId(),
+          quantity: 1,
         },
       ];
     }
@@ -139,7 +170,6 @@ export const CartProvider = ({ children }) => {
     }
   }, [cart]);
 
-  // Public API (das nutzt du in Components)
   const addMerchToCart = (product, quantity) => {
     dispatch({ type: ADD_MERCH, payload: { product, quantity } });
   };
@@ -148,11 +178,21 @@ export const CartProvider = ({ children }) => {
     dispatch({ type: ADD_FIRING, payload: { product, weight, photo } });
   };
 
-  const addStudioTimeToCart = (userName, startDateTime, endDateTime) => {
+  const addStudioTimeToCart = (
+    userName,
+    startDateTime,
+    endDateTime,
+    sessionId,
+    allocations = [],
+  ) => {
     dispatch({
       type: ADD_STUDIOTIME,
-      payload: { userName, startDateTime, endDateTime },
+      payload: { userName, startDateTime, endDateTime, sessionId, allocations },
     });
+  };
+
+  const addPassToCart = (product) => {
+    dispatch({ type: ADD_PASS, payload: { product } });
   };
 
   const removeItem = (cartItemId) => {
@@ -177,6 +217,7 @@ export const CartProvider = ({ children }) => {
     if (item.type === "MERCH") return acc + (item.quantity || 0);
     if (item.type === "FIRING") return acc + 1;
     if (item.type === "STUDIOTIME") return acc + 1;
+    if (item.type === "PASS") return acc + 1;
     return acc;
   }, 0);
 
@@ -187,6 +228,7 @@ export const CartProvider = ({ children }) => {
         addMerchToCart,
         addFiringToCart,
         addStudioTimeToCart,
+        addPassToCart,
         removeItem,
         updateMerchQty,
         updateFiringWeight,

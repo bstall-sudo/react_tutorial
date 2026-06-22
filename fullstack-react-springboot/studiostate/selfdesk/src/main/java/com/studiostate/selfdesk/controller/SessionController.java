@@ -33,34 +33,20 @@ public class SessionController {
                         saved.getUserName(),
                         saved.getSessionId(),
                         saved.getOpen(),
-                        saved.getServerStartTime(),
-                        saved.getClientStartTime(),
-                        saved.getServerEndTime(),
-                        saved.getClientEndTime()
-
+                        saved.getCheckInAt(),
+                        saved.getCheckOutAt(),
+                        List.of()
                 ));
     }
 
     @PutMapping("/{sessionId}")
     public ResponseEntity<SessionResponseDto> endSession(
             @PathVariable Long sessionId,
-            @RequestBody SessionEndRequestDto requestDto) {
+            @RequestBody SessionEndRequestDto requestDto
+    ) {
+        SessionResponseDto response = iSessionService.endSession(sessionId, requestDto);
 
-        Session updated = iSessionService.endSession(sessionId, requestDto);
-
-
-
-        return ResponseEntity.ok(
-                new SessionResponseDto(
-                        updated.getUserName(),
-                        updated.getSessionId(),
-                        updated.getOpen(),
-                        updated.getServerStartTime(),
-                        updated.getClientStartTime(),
-                        updated.getServerEndTime(),
-                        updated.getClientEndTime()
-                )
-        );
+        return ResponseEntity.ok(response);
     }
     /*
     @GetMapping
@@ -75,6 +61,21 @@ public class SessionController {
     @GetMapping("/user/{userId}")
     public List<SessionGetResponseDto> getSessionsByUserId(@PathVariable Long userId) {
         return iSessionService.getSessionsByUserId(userId);
+    }
+
+    @GetMapping("/open/user/{userId}")
+    public List<SessionGetResponseDto> getSessionsByUserIdAndOpenTrue(@PathVariable Long userId) {
+        return iSessionService.getOpenSessionsByUserId(userId);
+    }
+
+    @GetMapping("/payment/status/open/user/{userId}")
+    public List<SessionResponseDto> getSessionsByUserIdAndPaymentStatusOpen(@PathVariable Long userId) {
+        return iSessionService.getSessionsByUserIdAndPaymentStatusOpen(userId);
+    }
+
+    @GetMapping("/today/or/open")
+    public List<SessionGetResponseDto> getSessionsTodayOrOpenTrue() {
+        return iSessionService.getOpenSessionsOrSessionToday();
     }
 
     //added for admin overview page to filter sessions by UserID

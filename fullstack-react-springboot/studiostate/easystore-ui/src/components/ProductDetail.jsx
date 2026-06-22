@@ -23,14 +23,18 @@ export default function ProductDetail() {
   const [isHovering, setIsHovering] = useState(false);
   const [backgroundPosition, setBackgroundPosition] = useState("center");
 
-  const { addMerchToCart, addFiringToCart } = useCart();
+  const { addMerchToCart, addFiringToCart, addPassToCart } = useCart();
   const [selectedPhoto, setSelectedPhoto] = useState(null);
 
+  const merchCategories = ["tools", "engobes", "clay", "glazes"];
+
   const handleAddToCart = () => {
-    if (product.category !== "firings") {
+    if (product.category === "passes") {
+      addPassToCart(product);
+    } else if (product.category === "firings") {
+      addFiringToCart(product, weight, selectedPhoto);
+    } else if (merchCategories.includes(product.category)) {
       addMerchToCart(product, quantity);
-    } else {
-      addFiringToCart(product, weight, selectedPhoto /* später */);
     }
   };
 

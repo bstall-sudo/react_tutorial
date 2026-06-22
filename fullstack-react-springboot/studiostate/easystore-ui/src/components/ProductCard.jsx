@@ -5,15 +5,19 @@ import { useState } from "react";
 import { useCart } from "../store/cart-context";
 
 export default function ProductCard({ product }) {
-  const { addMerchToCart, addFiringToCart } = useCart();
+  const { addMerchToCart, addFiringToCart, addPassToCart } = useCart();
   const [selectedPhoto, setSelectedPhoto] = useState(null);
   const [quantity, setQuantity] = useState(1);
 
+  const merchCategories = ["tools", "engobes", "clay", "glazes"];
+
   const handleAddToCart = () => {
-    if (product.category !== "firings") {
-      addMerchToCart(product, quantity);
+    if (product.category === "passes") {
+      addPassToCart(product);
     } else if (product.category === "firings") {
-      addFiringToCart(product, weight, selectedPhoto /* später */);
+      addFiringToCart(product, weight, selectedPhoto);
+    } else if (merchCategories.includes(product.category)) {
+      addMerchToCart(product, quantity);
     }
   };
   return (

@@ -9,8 +9,9 @@ import java.time.Instant;
 @Setter
 public class SessionEndRequestDto {
 
-    private Instant clientEndTime;
+    private Instant C;
 
+    private String sessionComment;
 
 }
 

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import apiClient from "../api/apiClient";
+import { endSession } from "../utils/sessions";
 import {
   formatDate,
   formatTime,
@@ -41,17 +42,15 @@ export default function CheckInOut() {
     //  toggleState === 1 && open === 0 -> neue Session starten, weil es noch keine offene gibt
     if (toggleState === 1 && sessionDataObject.open === 0) {
       const start = new Date();
-      localStorage.setItem("clientStartTime", JSON.stringify(start));
+      localStorage.setItem("checkInAt", JSON.stringify(start));
       setTimeDateVariable(formatDate(start));
       startSession(start);
       const id = setInterval(() => {
-        const clientStartTime = JSON.parse(
-          localStorage.getItem("clientStartTime"),
-        );
+        const checkInAt = JSON.parse(localStorage.getItem("checkInAt"));
 
-        if (!clientStartTime) return;
+        if (!checkInAt) return;
         setTimeVariable(
-          formatTime(new Date().getTime() - Date.parse(clientStartTime)),
+          formatTime(new Date().getTime() - Date.parse(checkInAt)),
         );
       }, 1000);
 
@@ -60,13 +59,11 @@ export default function CheckInOut() {
     //  toggleState === 1 && open === 1 -> alte Session weiter führen, denn es gibt schon eine
     if (toggleState === 1 && sessionDataObject.open === 1) {
       const id = setInterval(() => {
-        const clientStartTime = JSON.parse(
-          localStorage.getItem("clientStartTime"),
-        );
+        const checkInAt = JSON.parse(localStorage.getItem("checkInAt"));
 
-        if (!clientStartTime) return;
+        if (!checkInAt) return;
         setTimeVariable(
-          formatTime(new Date().getTime() - Date.parse(clientStartTime)),
+          formatTime(new Date().getTime() - Date.parse(checkInAt)),
         );
       }, 1000);
 
@@ -75,10 +72,10 @@ export default function CheckInOut() {
     if (toggleState === 0) {
       // only end if there is an open session
       if (sessionDataObject.open === 1 && sessionDataObject.session_id) {
-        endSession(Number(sessionDataObject.session_id), new Date());
+        handleEndSession(Number(sessionDataObject.session_id), new Date());
       }
 
-      localStorage.setItem("clientStartTime", JSON.stringify(0));
+      localStorage.setItem("checkInAt", JSON.stringify(0));
       localStorage.setItem(
         "sessionData",
         JSON.stringify({ session_id: 0, server_start_time: 0, open: 0 }),
@@ -91,15 +88,15 @@ export default function CheckInOut() {
 
   const isCheckedIn = toggleState === 1;
 
-  async function endSession(sessionId, clientEndTime) {
-    const res = await apiClient.put(`/sessions/${sessionId}`, {
-      clientEndTime: clientEndTime.toISOString(),
-    });
+  async function handleEndSession(sessionId) {
+    const data = await endSession(sessionId, new Date());
 
     addStudioTimeToCart(
-      res.data.userName,
-      res.data.serverStartTime,
-      res.data.serverEndTime,
+      data.userName,
+      data.checkInAt,
+      data.checkOutAt,
+      data.sessionId,
+      data.allocations,
     );
   }
 
@@ -108,13 +105,13 @@ export default function CheckInOut() {
       passId: 12039843,
       userName: user.name,
       userId: user.userId,
-      clientStartTime: clientStart.toISOString(),
+      checkInAt: clientStart.toISOString(),
       open: 1,
     });
 
     const sessionData = {
       session_id: res.data.sessionId,
-      server_start_time: res.data.serverStartTime,
+      server_start_time: res.data.checkInAt,
       open: 1,
     };
 

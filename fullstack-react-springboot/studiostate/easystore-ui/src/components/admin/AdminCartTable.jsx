@@ -1,5 +1,5 @@
 import React from "react";
-import { useCart } from "../store/cart-context";
+import { useCart } from "../../store/cart-context";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes, faClock } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
@@ -7,17 +7,24 @@ import {
   calculateDuration,
   calcSecondsFromString,
   formatDateTime,
-} from "../utils/time";
-import CartTableStudioTime from "./CartTableStudioTime";
+} from "../../utils/time";
+import AdminCartTableStudioTime from "./AdminCartTableStudioTime";
 
 import { useEffect, useState } from "react";
 
-export default function CartTable() {
+export default function AdminCartTable() {
   const { cart, removeItem, updateMerchQty, updateFiringWeight } = useCart();
 
   const studioTimeInCart = cart.some((item) => item.type === "STUDIOTIME");
 
-  const passInCart = cart.some((item) => item.type === "PASS");
+  const [passInCart, setPassInCart] = useState(
+    cart.some((item) => item.type === "PASS"),
+  );
+
+  useEffect(() => {
+    setPassInCart(cart.some((item) => item.type === "PASS"));
+    console.log("passInCart:", passInCart);
+  }, [cart]);
 
   const calcLineTotal = (item) => {
     if (item.type === "MERCH") return item.price * item.quantity;
@@ -138,7 +145,7 @@ export default function CartTable() {
                     <span className="text-xs opacity-80">grams</span>
                   </div>
                 ) : (
-                  <CartTableStudioTime
+                  <AdminCartTableStudioTime
                     item={item}
                     lineTotal={calcLineTotal(item)}
                     passInCart={passInCart}
@@ -175,8 +182,8 @@ export default function CartTable() {
                   <>
                     <p>€{subtotal}</p>
                     <p className="text-sm text-green-600">
-                      The Walk In session fee will be substracted at checkout,
-                      because you have a monthly pass in your cart.
+                      The Walk In session fee is substracted, because you have a
+                      monthly pass in your cart.
                     </p>
                   </>
                 ) : (

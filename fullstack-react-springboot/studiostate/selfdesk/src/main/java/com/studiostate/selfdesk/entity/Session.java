@@ -1,11 +1,14 @@
 package com.studiostate.selfdesk.entity;
 
+import com.studiostate.selfdesk.dto.SessionAllocationResponseDto;
 import com.studiostate.selfdesk.dto.SessionResponseDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -24,14 +27,6 @@ public class Session extends BaseEntity {
     @Column(name = "user_id", nullable = true)
     private Long userId;
 
-    @Column(name = "pass_id", nullable = true)
-    private Long passId;
-
-    @Column(name = "pass_type", nullable = true)
-    private String passType;
-
-    @Column(name = "paid", nullable = true)
-    private Boolean paid;
 
     @Column(name = "open", nullable = false)
     private Boolean open;
@@ -39,16 +34,16 @@ public class Session extends BaseEntity {
     @Column(name = "session_comment", nullable = true)
     private String sessionComment;
 
-    @Column(name = "server_start_time", nullable = true)
-    private Instant serverStartTime;
+    @Column(name = "check_in_at", nullable = true)
+    private Instant checkInAt;
 
-    @Column(name = "server_end_time", nullable = true)
-    private Instant serverEndTime;
+    @Column(name = "check_out_at", nullable = true)
+    private Instant checkOutAt;
 
-    @Column(name = "client_start_time", nullable = true)
-    private Instant clientStartTime;
+    @OneToMany(mappedBy = "session", fetch = FetchType.LAZY)
+    private List<SessionAllocation> allocations;
 
-    @Column(name = "client_end_time", nullable = true)
-    private Instant clientEndTime;
+
+
 
 }

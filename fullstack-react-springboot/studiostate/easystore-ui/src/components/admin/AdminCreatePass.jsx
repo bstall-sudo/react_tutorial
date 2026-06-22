@@ -85,10 +85,6 @@ export default function AdminCreatePass() {
       >
         {/* First and Last Name Row */}
         <div>
-          {/* First Name Field */}
-
-          {/* Last Name Field */}
-
           <div>
             <textarea
               readOnly
@@ -99,6 +95,18 @@ export default function AdminCreatePass() {
       resize-none whitespace-pre-wrap break-words
        overflow-y-auto"
               value={selectedUser ? String(selectedUser.comments ?? "") : ""}
+            />
+          </div>
+          <div>
+            <textarea
+              readOnly
+              rows={4}
+              className="cursor-not-allowed w-full px-2 py-1 text-base rounded-md transition
+      focus:outline-none text-gray-600 dark:text-lighter
+      bg-gray-100 dark:bg-darkbg placeholder-gray-400 dark:placeholder-gray-300
+      resize-none whitespace-pre-wrap break-words
+       overflow-y-auto"
+              value={selectedUser ? String(selectedUser.userId ?? "") : ""}
             />
           </div>
         </div>

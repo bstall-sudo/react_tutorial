@@ -1,17 +1,36 @@
-CREATE TABLE IF NOT EXISTS sessions
-(
-    session_id  		BIGINT AUTO_INCREMENT PRIMARY KEY,
-    user_id     		BIGINT                                  NOT NULL,
-    user_name   		VARCHAR(40)                            NOT NULL,
-    check_in_at       	TIMESTAMP                        DEFAULT CURRENT_TIMESTAMP,
-    check_out_at    	TIMESTAMP                        DEFAULT NULL,
+CREATE TABLE IF NOT EXISTS session_allocations (
+    allocation_id BIGINT NOT NULL AUTO_INCREMENT,
 
-    session_comment 	VARCHAR(200)                        DEFAULT NULL,
+    session_id BIGINT NOT NULL,
+    allocation_type VARCHAR(40) NOT NULL,
 
-	open        		TINYINT                                     DEFAULT 1,
+    payment_status VARCHAR(40) NOT NULL,
+
+    pass_id BIGINT NULL,
+
+    start_at TIMESTAMP NOT NULL,
+    end_at TIMESTAMP NOT NULL,
+
+    seconds BIGINT NOT NULL,
+
+    amount_cents BIGINT DEFAULT 0,
+
     created_by      	VARCHAR(40) DEFAULT NULL,
-    created_at   		TIMESTAMP   DEFAULT CURRENT_TIMESTAMP NOT NULL,
 
     updated_by      	VARCHAR(40) DEFAULT NULL,
-    updated_at      	TIMESTAMP   DEFAULT NULL
-    );
+
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    PRIMARY KEY (allocation_id),
+
+    CONSTRAINT fk_session_allocations_session
+        FOREIGN KEY (session_id)
+        REFERENCES sessions(session_id)
+        ON DELETE CASCADE,
+
+    CONSTRAINT fk_session_allocations_pass
+        FOREIGN KEY (pass_id)
+        REFERENCES passes(pass_id)
+        ON DELETE SET NULL
+)
